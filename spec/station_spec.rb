@@ -27,7 +27,7 @@ RSpec.describe Station do
 
     it 'send train' do
       @station.send_train(@train)
-      expect(@station.trains.length).to eq 0
+      expect(@station.trains.length).to eq(0)
     end
   end
 end
