@@ -10,10 +10,16 @@ class Route
   end
 
   def show_stations
-    puts stations.map(&:name).join(', ')
+    stations.each { |s| puts s.name }
   end
 
   def delete_station(station)
-    stations.reject! { |s| s.name == station.name }
+    station_index = stations.find_index(station)
+
+    if station_index.zero? || station_index == stations.length - 1
+      puts 'station can not be removed'
+    else
+      stations.delete(station)
+    end
   end
 end
