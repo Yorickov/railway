@@ -26,14 +26,14 @@ class Train
 
   def add_route(route)
     @route = route
-    @current_station = route.stations[0]
+    @current_station = route.stations.first
     current_station.add_train(self)
   end
 
   def next_station
     new_station_index = route.stations.find_index(current_station) + 1
 
-    if new_station_index >= route.stations.length
+    if new_station_index >= route.stations.size
       puts 'no more stations'
     else
       route.stations[new_station_index]
