@@ -1,10 +1,14 @@
 require 'route'
 require 'station'
 require 'train'
+require 'carriage'
+require 'passenger_carriage'
+require 'cargo_carriage'
 
 describe Route, '#light_methods' do
   before(:context) do
-    @train = Train.new('1', 'passenger', 3)
+    @train = Train.new('1', 'passenger')
+    @passenger_carriage = PassengerCarriage.new
   end
 
   it 'speed up' do
@@ -18,19 +22,19 @@ describe Route, '#light_methods' do
   end
 
   it 'add carriage' do
-    @train.add_carriage
-    expect(@train.carriage_count).to eq(4)
+    @train.add_carriage(@passenger_carriage)
+    expect(@train.carriages).to include(@passenger_carriage)
   end
 
   it 'remove carriage' do
     @train.remove_carriage
-    expect(@train.carriage_count).to eq(3)
+    expect(@train.carriages.size).to eq(0)
   end
 end
 
 describe Route, '#hard_methods' do
   before(:context) do
-    @train = Train.new('1', 'passenger', 3)
+    @train = Train.new('1', 'passenger')
     @first_station = Station.new('Boston')
     @last_station = Station.new('NY')
     @route = Route.new(@first_station, @last_station)
@@ -62,7 +66,7 @@ end
 
 describe Route, '#wrong hard_methods' do
   before(:context) do
-    @train = Train.new('1', 'passenger', 3)
+    @train = Train.new('1', 'passenger')
     @first_station = Station.new('Boston')
     @last_station = Station.new('NY')
     @route = Route.new(@first_station, @last_station)

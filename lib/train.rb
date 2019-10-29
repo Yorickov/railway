@@ -1,10 +1,10 @@
 class Train
-  attr_reader :id, :type, :carriage_count, :speed, :current_station, :route
+  attr_reader :id, :type, :carriages, :speed, :current_station, :route
 
-  def initialize(id, type, carriage_count)
+  def initialize(id, type)
     @id = id
     @type = type
-    @carriage_count = carriage_count
+    @carriages = []
     @speed = 0
   end
 
@@ -16,12 +16,12 @@ class Train
     @speed = 0
   end
 
-  def add_carriage
-    @carriage_count += 1 if speed.zero?
+  def add_carriage(carriage)
+    @carriages << carriage if speed.zero?
   end
 
   def remove_carriage
-    @carriage_count -= 1 if speed.zero? && carriage_count.positive?
+    carriages.pop if speed.zero?
   end
 
   def add_route(route)

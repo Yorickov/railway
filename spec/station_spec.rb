@@ -4,7 +4,7 @@ require 'train'
 RSpec.describe Station do
   before(:context) do
     @station = Station.new('Boston')
-    @train = Train.new('1', 'passenger', 3)
+    @train = Train.new('1', 'passenger')
   end
 
   describe 'methods' do
@@ -27,7 +27,7 @@ RSpec.describe Station do
 
     it 'send train' do
       @station.send_train(@train)
-      expect(@station.trains.length).to eq(0)
+      expect(@station.trains.size).to eq(0)
     end
   end
 end
