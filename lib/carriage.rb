@@ -1,3 +1,1 @@
-class Carriage
-  attr_reader :type
-end
+class Carriage; end

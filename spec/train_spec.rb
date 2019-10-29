@@ -1,88 +1,85 @@
 require 'route'
 require 'station'
 require 'train'
+require 'passenger_train'
+require 'cargo_train'
 require 'carriage'
 require 'passenger_carriage'
 require 'cargo_carriage'
 
-describe Route, '#light_methods' do
+describe Train, '#light_methods' do
   before(:context) do
-    @train = Train.new('1', 'passenger')
+    @passenger_train = PassengerTrain.new('1')
     @passenger_carriage = PassengerCarriage.new
+    @cargo_carriage = CargoCarriage.new
   end
 
   it 'speed up' do
-    @train.speed_up
-    expect(@train.speed).to eq(1)
+    @passenger_train.speed_up
+    expect(@passenger_train.speed).to eq(1)
   end
 
   it 'slow down' do
-    @train.slow_down
-    expect(@train.speed).to eq(0)
+    @passenger_train.slow_down
+    expect(@passenger_train.speed).to eq(0)
   end
 
-  it 'add carriage' do
-    @train.add_carriage(@passenger_carriage)
-    expect(@train.carriages).to include(@passenger_carriage)
+  it 'add carriage' do # edit
+    @passenger_train.add_carriage(@passenger_carriage)
+    expect(@passenger_train.carriages_count).to eq(1)
   end
 
-  it 'remove carriage' do
-    @train.remove_carriage
-    expect(@train.carriages.size).to eq(0)
+  it 'add carriage' do # edit
+    expect { @passenger_train.add_carriage(@cargo_carriage) }
+      .to output("wrong carriage\n")
+      .to_stdout
+  end
+
+  it 'remove carriage' do # edit
+    @passenger_train.remove_carriage
+    expect(@passenger_train.carriages_count).to eq(0)
   end
 end
 
-describe Route, '#hard_methods' do
+describe Train, '#hard_methods' do
   before(:context) do
-    @train = Train.new('1', 'passenger')
+    @cargo_rain = CargoTrain.new('1')
     @first_station = Station.new('Boston')
     @last_station = Station.new('NY')
     @route = Route.new(@first_station, @last_station)
   end
 
   it 'add route' do
-    @train.add_route(@route)
-    expect(@train.current_station.name).to eq('Boston')
-  end
-
-  it 'next station' do
-    expect(@train.next_station.name).to eq('NY')
+    @cargo_rain.add_route(@route)
+    expect(@cargo_rain.current_station.name).to eq('Boston')
   end
 
   it 'to next station' do
-    @train.to_next_station
-    expect(@train.current_station.name).to eq('NY')
-  end
-
-  it 'previous station' do
-    expect(@train.previous_station.name).to eq('Boston')
+    @cargo_rain.to_next_station
+    expect(@cargo_rain.current_station.name).to eq('NY')
   end
 
   it 'to previous station' do
-    @train.to_previous_station
-    expect(@train.current_station.name).to eq('Boston')
+    @cargo_rain.to_previous_station
+    expect(@cargo_rain.current_station.name).to eq('Boston')
   end
 end
 
-describe Route, '#wrong hard_methods' do
+describe Train, '#wrong hard_methods' do
   before(:context) do
-    @train = Train.new('1', 'passenger')
+    @passenger_train = PassengerTrain.new('1')
     @first_station = Station.new('Boston')
     @last_station = Station.new('NY')
     @route = Route.new(@first_station, @last_station)
-    @train.add_route(@route)
+    @passenger_train.add_route(@route)
   end
 
-  it 'previous station' do
-    expect { @train.previous_station }
-      .to output("no more stations\n")
-      .to_stdout
+  it 'to previous station' do
+    expect(@passenger_train.to_previous_station).to be_nil
   end
 
-  it 'next station' do
-    @train.to_next_station
-    expect { @train.next_station }
-      .to output("no more stations\n")
-      .to_stdout
+  it 'to next station' do
+    @passenger_train.to_next_station
+    expect(@passenger_train.to_next_station).to be_nil
   end
 end

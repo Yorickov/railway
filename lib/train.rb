@@ -1,9 +1,8 @@
 class Train
-  attr_reader :id, :type, :carriages, :speed, :current_station, :route
+  attr_reader :id, :speed, :current_station, :route
 
-  def initialize(id, type)
+  def initialize(id)
     @id = id
-    @type = type
     @carriages = []
     @speed = 0
   end
@@ -16,49 +15,76 @@ class Train
     @speed = 0
   end
 
+  def carriages_count
+    carriages.size
+  end
+
   def add_carriage(carriage)
-    @carriages << carriage if speed.zero?
+    if speed.positive?
+      puts 'train is running'
+    elsif type != carriage.type
+      puts 'wrong carriage'
+    else
+      @carriages << carriage
+    end
   end
 
   def remove_carriage
-    carriages.pop if speed.zero?
+    if speed.positive?
+      puts 'train is running'
+    elsif carriages_count.zero?
+      puts 'no more carriages'
+    else
+      carriages.pop
+    end
   end
 
   def add_route(route)
     @route = route
-    @current_station = route.stations.first
+    @current_station = route.first_station
     current_station.add_train(self)
-  end
-
-  def next_station
-    new_station_index = route.stations.find_index(current_station) + 1
-
-    if new_station_index >= route.stations.size
-      puts 'no more stations'
-    else
-      route.stations[new_station_index]
-    end
-  end
-
-  def previous_station
-    new_station_index = route.stations.find_index(current_station) - 1
-
-    if new_station_index.negative?
-      puts 'no more stations'
-    else
-      route.stations[new_station_index]
-    end
   end
 
   def to_next_station
-    current_station.send_train(self)
-    @current_station = next_station
-    current_station.add_train(self)
+    if next_station
+      current_station.send_train(self)
+      @current_station = next_station
+      current_station.add_train(self)
+    else
+      puts 'it is the last station'
+    end
   end
 
   def to_previous_station
-    current_station.send_train(self)
-    @current_station = previous_station
-    current_station.add_train(self)
+    if previous_station
+      current_station.send_train(self)
+      @current_station = previous_station
+      current_station.add_train(self)
+    else
+      puts 'it is the first station'
+    end
+  end
+
+  protected
+
+  # не нужен для интерфейса, для подсчета вагонов введен carriages_count
+
+  attr_reader :carriages
+
+  # внутренние методы, которые используют или будуть использовать
+  # интерфейсные - to_next_station, show_next_station, etc
+
+  def next_station
+    return if route.last_station == current_station
+
+    new_station_index = route.stations.index(current_station) + 1
+    route.stations[new_station_index]
+  end
+
+  def previous_station
+    return if route.first_station == current_station
+
+    new_station_index = route.stations.index(current_station) - 1
+    route.stations[new_station_index]
   end
 end

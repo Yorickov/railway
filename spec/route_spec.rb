@@ -1,7 +1,7 @@
 require 'route'
 require 'station'
 
-RSpec.describe Route do
+describe Route do
   before(:context) do
     @first_station = Station.new('Boston')
     @last_station = Station.new('NY')
@@ -9,37 +9,35 @@ RSpec.describe Route do
     @route = Route.new(@first_station, @last_station)
   end
 
-  describe 'methods' do
-    context 'right' do
-      it 'add station' do
-        @route.add_station(@new_station)
-        expect(@route.stations).to include(@new_station)
-      end
-
-      it 'show stations' do
-        expect { @route.show_stations }
-          .to output("Boston\nDallas\nNY\n")
-          .to_stdout
-      end
-
-      it 'delete station' do
-        @route.delete_station(@new_station)
-        expect(@route.stations).not_to include(@new_station)
-      end
+  context 'right' do
+    it 'add station' do
+      @route.add_station(@new_station)
+      expect(@route.stations).to include(@new_station)
     end
 
-    context 'wrong' do
-      it 'delete first station' do
-        expect { @route.delete_station(@first_station) }
-          .to output("station can not be removed\n")
-          .to_stdout
-      end
+    it 'show stations' do
+      expect { @route.show_stations }
+        .to output("Boston\nDallas\nNY\n")
+        .to_stdout
+    end
 
-      it 'delete last station' do
-        expect { @route.delete_station(@last_station) }
-          .to output("station can not be removed\n")
-          .to_stdout
-      end
+    it 'delete station' do
+      @route.delete_station(@new_station)
+      expect(@route.stations).not_to include(@new_station)
+    end
+  end
+
+  context 'wrong' do
+    it 'delete first station' do
+      expect { @route.delete_station(@first_station) }
+        .to output("station can not be removed\n")
+        .to_stdout
+    end
+
+    it 'delete last station' do
+      expect { @route.delete_station(@last_station) }
+        .to output("station can not be removed\n")
+        .to_stdout
     end
   end
 end

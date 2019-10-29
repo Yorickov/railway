@@ -5,6 +5,14 @@ class Route
     @stations = [first_station, last_station]
   end
 
+  def first_station
+    stations.first
+  end
+
+  def last_station
+    stations.last
+  end
+
   def add_station(station, position = -2)
     stations.insert(position, station)
   end
@@ -14,9 +22,7 @@ class Route
   end
 
   def delete_station(station)
-    station_index = stations.find_index(station)
-
-    if station_index.zero? || station_index == stations.length - 1
+    if [first_station, last_station].include?(station)
       puts 'station can not be removed'
     else
       stations.delete(station)

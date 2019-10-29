@@ -1,16 +1,17 @@
 require 'station'
 require 'train'
+require 'passenger_train'
 
-RSpec.describe Station do
+describe Station do
   before(:context) do
     @station = Station.new('Boston')
-    @train = Train.new('1', 'passenger')
+    @passenger_train = PassengerTrain.new('1')
   end
 
-  describe 'methods' do
+  describe 'passenger methods' do
     it 'add train' do
-      @station.add_train(@train)
-      expect(@station.trains).to include(@train)
+      @station.add_train(@passenger_train)
+      expect(@station.trains).to include(@passenger_train)
     end
 
     it 'show trains' do
@@ -26,7 +27,7 @@ RSpec.describe Station do
     end
 
     it 'send train' do
-      @station.send_train(@train)
+      @station.send_train(@passenger_train)
       expect(@station.trains.size).to eq(0)
     end
   end
