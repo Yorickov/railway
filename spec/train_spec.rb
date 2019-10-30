@@ -56,7 +56,7 @@ describe Train, '#move_methods' do
   end
 
   it 'add route' do
-    @cargo_rain.add_route(@route)
+    @cargo_rain.add_route = @route
     expect(@cargo_rain.current_station.name).to eq('Boston')
   end
 

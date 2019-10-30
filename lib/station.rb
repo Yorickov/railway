@@ -11,7 +11,7 @@ class Station
   end
 
   def show_trains
-    trains.each { |t| puts t.id }
+    trains.each { |t| puts t.info }
   end
 
   def show_trains_by_type(type)

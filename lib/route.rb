@@ -18,7 +18,7 @@ class Route
   end
 
   def show_stations
-    stations.each { |s| puts s.name }
+    puts stations.map(&:name).join(', ')
   end
 
   def delete_station(station)

@@ -39,7 +39,7 @@ class Train
     end
   end
 
-  def add_route(route)
+  def add_route=(route)
     @route = route
     @current_station = route.first_station
     current_station.add_train(self)
@@ -63,6 +63,10 @@ class Train
     else
       puts 'it is the first station'
     end
+  end
+
+  def info
+    "Train No #{id}, #{route.first_station.name} - #{route.last_station.name}"
   end
 
   protected

@@ -4,7 +4,7 @@ require 'station'
 describe Route do
   before(:context) do
     @first_station = Station.new('Boston')
-    @last_station = Station.new('NY')
+    @last_station = Station.new('San Antonio')
     @new_station = Station.new('Dallas')
     @route = Route.new(@first_station, @last_station)
   end
@@ -17,7 +17,7 @@ describe Route do
 
     it 'show stations' do
       expect { @route.show_stations }
-        .to output("Boston\nDallas\nNY\n")
+        .to output("Boston, Dallas, San Antonio\n")
         .to_stdout
     end
 
