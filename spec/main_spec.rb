@@ -14,7 +14,7 @@ require_relative '../main'
 describe 'station managment' do
   it 'create station' do
     @stations = {}
-    create_station!('Boston')
+    create_station('Boston')
     expect(@stations['Boston'].name).to eq('Boston')
   end
 end

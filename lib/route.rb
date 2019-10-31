@@ -18,7 +18,7 @@ class Route
   end
 
   def show_stations
-    puts stations.map(&:name).join(', ')
+    to_hash.keys.join(', ')
   end
 
   def delete_station(station)
@@ -27,5 +27,9 @@ class Route
     else
       stations.delete(station)
     end
+  end
+
+  def to_hash
+    stations.each_with_object({}) { |item, acc| acc[item.name] = item }
   end
 end
