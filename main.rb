@@ -14,7 +14,7 @@ require_relative 'lib/cargo_carriage'
 @trains = {}
 
 @train_types = { 'passenger' => PassengerTrain, 'cargo' => CargoTrain }
-# @carriage_types = { 'passenger' => PassengerCarriage, 'cargo' => CargoCarriage }
+@carriage_types = { 'passenger' => PassengerCarriage, 'cargo' => CargoCarriage }
 
 def create_train(type = nil)
   puts 'Enter train number'
@@ -213,10 +213,36 @@ def update_by_type(route)
   update_by_type(route)
 end
 
-# create_station_console
-# create_station_console
-# show_station_trains
-# show_stations
+def create_carriage
+  puts 'enter carriage type'
+
+  type_index = input_index(@carriage_types.keys)
+  type = @carriage_types.keys[type_index]
+  @carriage_types[type].new
+end
+
+def manage_carriages
+  train = find_train
+  manage_carriages_process(train)
+end
+
+def manage_carriages_process(train)
+  puts 'enter A to add carriage, D to remove or X to exit'
+
+  choice = gets.chomp.downcase
+
+  case choice
+  when 'a'
+    train.add_carriage(create_carriage)
+  when 'd'
+    train.remove_carriage
+  when 'x'
+    return
+  else
+    manage_carriages_process(train)
+  end
+  manage_carriages_process(train)
+end
 
 create_route
 # create_route
@@ -226,7 +252,8 @@ create_route
 # p @stations
 
 create_train
-# add_route_to_train
 # create_train
+
+# move_train
+manage_carriages
 p @trains
-move_train
