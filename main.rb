@@ -20,6 +20,7 @@ def create_train(type = nil)
   puts 'Enter train number'
 
   train_id = gets.chomp
+
   if @trains.keys.include?(train_id)
     puts 'there is already such a number'
     create_train(type)
@@ -164,7 +165,6 @@ end
 def add_route(route)
   if @routes.any? { |r| r.station_list == route.station_list }
     puts 'there is already such a route'
-    puts route.show_stations
   else
     @routes.push(route)
   end
