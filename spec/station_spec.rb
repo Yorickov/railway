@@ -31,12 +31,12 @@ describe Station do
 
   it 'show passenger trains' do
     expect { @station.show_trains_by_type('passenger') }
-      .to output("1\n").to_stdout
+      .to output("Train No 1, Boston - NY\n").to_stdout
   end
 
   it 'show cargo trains' do
     expect { @station.show_trains_by_type('cargo') }
-      .to output("2\n").to_stdout
+      .to output("Train No 2, Boston - NY\n").to_stdout
   end
 
   it 'send train' do

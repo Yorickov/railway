@@ -129,11 +129,11 @@ end
 
 # add search by route?
 def show_stations
-  puts @stations.keys.join(', ')
+  @stations.keys.each { |name| puts name }
 end
 
 def show_routes
-  @routes.each { |r| puts r.to_hash.keys.join(', ') }
+  @routes.each { |r| puts r.show_stations }
 end
 
 def create_route
@@ -162,7 +162,7 @@ def choose_station
 end
 
 def add_route(route)
-  if @routes.any? { |r| r.to_hash.keys == route.to_hash.keys }
+  if @routes.any? { |r| r.station_list == route.station_list }
     puts 'there is already such a route'
     puts route.show_stations
   else
@@ -193,7 +193,7 @@ end
 def find_route
   puts 'Choose route by the index'
 
-  str_routes = @routes.map { |r| r.to_hash.keys.join(', ') } # TODO
+  str_routes = @routes.map { |r| r.station_list.join(', ') } # TODO
   route_index = input_index(str_routes)
 
   @routes[route_index]

@@ -16,7 +16,7 @@ describe Route do
     end
 
     it 'show stations' do
-      expect(@route.show_stations).to eq('Boston, Dallas, San Antonio')
+      expect(@route.show_stations).to eq('Boston - Dallas - San Antonio')
     end
 
     it 'delete station' do

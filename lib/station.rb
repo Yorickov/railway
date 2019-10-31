@@ -15,8 +15,9 @@ class Station
   end
 
   def show_trains_by_type(type)
-    selected = trains.select { |t| t.type == type }
-    selected.each { |t| puts t.id }
+    trains
+      .select { |t| t.type == type }
+      .each { |t| puts t.info }
   end
 
   def send_train(train)
