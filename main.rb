@@ -137,16 +137,28 @@ def show_routes
 end
 
 def create_route
-  puts 'create first station'
-  first_station = create_station_console
+  puts 'add first station'
+  first_station = choose_station
 
-  puts 'create last station'
-  last_station = create_station_console
+  puts 'add last station'
+  last_station = choose_station
 
   route = Route.new(first_station, last_station)
 
   add_station_console(route)
   add_route(route)
+end
+
+def choose_station
+  if @stations.size <= 1
+    puts 'there is no stations'
+    return
+  end
+
+  puts 'enter index of station or X to exit'
+
+  station_index = input_index(@stations.keys)
+  @stations.values[station_index]
 end
 
 def add_route(route)
@@ -244,16 +256,93 @@ def manage_carriages_process(train)
   manage_carriages_process(train)
 end
 
-create_route
-# create_route
+def station_management
+  puts "Enter C to create station,\n" \
+  "T to show trains on station,\n" \
+  'A to show all stations or X to exit'
 
-# update_route
-# p @routes
-# p @stations
+  choice = gets.chomp.downcase
 
-create_train
-# create_train
+  case choice
+  when 'c'
+    create_station_console
+  when 't'
+    show_station_trains
+  when 'a'
+    show_stations
+  when 'x'
+    return
+  else
+    station_management
+  end
+  station_management
+end
 
-# move_train
-manage_carriages
-p @trains
+def route_management
+  puts "Enter C to create route, U to update route\n" \
+  "R - to show all routes\n or X to exit"
+
+  choice = gets.chomp.downcase
+
+  case choice
+  when 'c'
+    create_route
+  when 'u'
+    update_route
+  when 'r'
+    show_routes
+  when 'x'
+    return
+  else
+    route_management
+  end
+  route_management
+end
+
+def train_management
+  puts "Enter C to create train, A to add route\n" \
+  "U - to change carriages, M - to move train\n" \
+  'or X to exit'
+
+  choice = gets.chomp.downcase
+
+  case choice
+  when 'c'
+    create_train
+  when 'a'
+    add_route_to_train
+  when 'u'
+    manage_carriages
+  when 'm'
+    move_train
+  when 'x'
+    return
+  else
+    train_management
+  end
+  train_management
+end
+
+def start
+  puts "Enter S to go to Station Management,\n" \
+  "R - to Route Management, T - to Train management\n" \
+  'or X to exit'
+
+  choice = gets.chomp.downcase
+
+  case choice
+  when 's'
+    station_management
+  when 'r'
+    route_management
+  when 't'
+    train_management
+  when 'x'
+    return
+  else
+    start
+  end
+  start
+end
+
+start
