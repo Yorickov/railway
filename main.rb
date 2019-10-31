@@ -20,24 +20,57 @@ def create_train(type = nil)
   puts 'Enter train number'
 
   train_id = gets.chomp
-  return @train_types[type].new(train_id) if type
+  if @trains.keys.include?(train_id)
+    puts 'there is already such a number'
+    create_train(type)
+  else
+    return @train_types[type].new(train_id) if type
 
-  puts 'Choose train type'
-  type_index = input_index(@train_types.keys)
-  type = @train_types.keys[type_index]
-  train = @train_types[type].new(train_id)
+    puts 'Choose train type'
 
-  @trains[train.id] = train
+    type_index = input_index(@train_types.keys)
+    type = @train_types.keys[type_index]
+    train = @train_types[type].new(train_id)
+
+    puts 'Enter A if you add route to train'
+
+    choice = gets.chomp.downcase
+    add_route_to_train(train) if choice == 'a'
+
+    @trains[train.id] = train
+  end
 end
 
 def input_index(array)
   array.each.with_index(1) do |item, index|
-    puts 'Enter index' \
-        "\t#{index}. #{item}"
+    puts "Enter index\n\t#{index}. #{item}"
   end
 
   choice = gets.chomp.to_i - 1
   choice.between?(0, array.size - 1) ? choice : input_index(array)
+end
+
+def add_route_to_train(train = nil)
+  if @routes.empty?
+    puts 'there is no routes'
+  elsif @trains.empty?
+    puts 'there is no trains'
+  else
+    route = find_route
+    train ||= find_train
+
+    train.add_route = route
+    train
+  end
+end
+
+def find_train
+  puts 'Choose train by the index'
+
+  str_trains = @trains.values.map(&:info)
+  train_index = input_index(str_trains)
+
+  @trains.values[train_index]
 end
 
 def create_station(name)
@@ -52,21 +85,33 @@ def create_station_console
   name = gets.chomp
   create_station_console if name == ''
 
-  create_station(name)
+  if @stations.any? { |s| s.name == name }
+    puts 'there is already such a station'
+    create_station_console
+  else
+    create_station(name)
+  end
 end
 
 def show_station_trains
+  if @stations.empty?
+    puts 'there is no stations'
+    return
+  end
+
   puts 'enter index of station or X to exit'
 
   station_index = input_index(@stations.keys)
-  return unless station_index
-
   @stations.values[station_index.to_i].show_trains
 end
 
 # add search by route?
 def show_stations
   puts @stations.keys.join(', ')
+end
+
+def show_routes
+  @routes.each { |r| puts r.to_hash.keys.join(', ') }
 end
 
 def create_route
@@ -93,11 +138,31 @@ end
 
 def add_station_console(route)
   puts 'enter Y to add station or N to exit'
+
   choice = gets.chomp.downcase
   return if choice == 'n'
 
   route.add_station(create_station_console) if choice == 'y' # position?
   add_station_console(route)
+end
+
+def update_route
+  if @routes.empty?
+    puts 'there is no routes'
+    return
+  end
+
+  route = find_route
+  update_by_type(route)
+end
+
+def find_route
+  puts 'Choose route by the index'
+
+  str_routes = @routes.map { |r| r.to_hash.keys.join(', ') } # TODO
+  route_index = input_index(str_routes)
+
+  @routes[route_index]
 end
 
 def delete_station_console(route)
@@ -108,17 +173,7 @@ def delete_station_console(route)
   route.delete_station(@stations[choice])
 end
 
-def find_route
-  puts 'Choose route by the index'
-
-  str_routes = @routes.map { |r| r.to_hash.keys.join(', ') } # TODO
-  route_index = input_index(str_routes)
-  return unless route_index
-
-  @routes[route_index]
-end
-
-def choice_update_type(route)
+def update_by_type(route)
   puts 'enter A to add station, D to delete S to show station or X to exit'
   choice = gets.chomp.downcase
   return if choice == 'x'
@@ -131,17 +186,7 @@ def choice_update_type(route)
   when 's'
     puts route.show_stations
   else
-    choice_update_type(route)
+    update_by_type(route)
   end
-  choice_update_type(route)
-end
-
-def update_route
-  if @routes.empty?
-    puts 'there is no routes'
-    return
-  end
-
-  route = find_route
-  choice_update_type(route)
+  update_by_type(route)
 end
