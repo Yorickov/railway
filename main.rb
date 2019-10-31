@@ -11,6 +11,24 @@ require_relative 'lib/cargo_carriage'
 
 @stations = {}
 @routes = []
+@trains = {}
+
+@train_types = { 'passenger' => PassengerTrain, 'cargo' => CargoTrain }
+# @carriage_types = { 'passenger' => PassengerCarriage, 'cargo' => CargoCarriage }
+
+def create_train(type = nil)
+  puts 'Enter train number'
+
+  train_id = gets.chomp
+  return @train_types[type].new(train_id) if type
+
+  puts 'Choose train type'
+  type_index = input_index(@train_types.keys)
+  type = @train_types.keys[type_index]
+  train = @train_types[type].new(train_id)
+
+  @trains[train.id] = train
+end
 
 def input_index(array)
   array.each.with_index(1) do |item, index|
@@ -127,15 +145,3 @@ def update_route
   route = find_route
   choice_update_type(route)
 end
-
-# create_station_console
-# create_station_console
-# show_station_trains
-# show_stations
-
-create_route
-create_route
-
-update_route
-p @routes
-p @stations
