@@ -26,24 +26,23 @@ def create_train(type = nil)
   else
     return @train_types[type].new(train_id) if type
 
-    puts 'Choose train type'
+    puts 'Choose train type (enter index'
 
     type_index = input_index(@train_types.keys)
     type = @train_types.keys[type_index]
     train = @train_types[type].new(train_id)
 
+    @trains[train.id] = train
     puts 'Enter A if you add route to train'
 
     choice = gets.chomp.downcase
     add_route_to_train(train) if choice == 'a'
-
-    @trains[train.id] = train
   end
 end
 
 def input_index(array)
   array.each.with_index(1) do |item, index|
-    puts "Enter index\n\t#{index}. #{item}"
+    puts "\t#{index}. #{item}"
   end
 
   choice = gets.chomp.to_i - 1
@@ -71,6 +70,29 @@ def find_train
   train_index = input_index(str_trains)
 
   @trains.values[train_index]
+end
+
+def move_train
+  train = find_train
+  move_train_process(train)
+end
+
+def move_train_process(train)
+  puts 'enter F to move train forwards, B - backwards or X to exit'
+
+  choice = gets.chomp.downcase
+
+  case choice
+  when 'f'
+    train.to_next_station
+  when 'b'
+    train.to_previous_station
+  when 'x'
+    return
+  else
+    move_train_process(train)
+  end
+  move_train_process(train)
 end
 
 def create_station(name)
@@ -204,8 +226,7 @@ create_route
 # p @stations
 
 create_train
-add_route_to_train
+# add_route_to_train
 # create_train
 p @trains
-# p @trains.values[0].type
-# p @trains.values[1].type
+move_train
