@@ -66,7 +66,11 @@ class Train
   end
 
   def info
-    "Train No #{id}, #{route.first_station.name} - #{route.last_station.name}"
+    if @route
+      "Train No #{id}, #{route.first_station.name} - #{route.last_station.name}"
+    else
+      "Train No #{id}"
+    end
   end
 
   protected

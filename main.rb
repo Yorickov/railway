@@ -85,7 +85,7 @@ def create_station_console
   name = gets.chomp
   create_station_console if name == ''
 
-  if @stations.any? { |s| s.name == name }
+  if @stations.keys.include?(name)
     puts 'there is already such a station'
     create_station_console
   else
@@ -190,3 +190,22 @@ def update_by_type(route)
   end
   update_by_type(route)
 end
+
+# create_station_console
+# create_station_console
+# show_station_trains
+# show_stations
+
+create_route
+# create_route
+
+# update_route
+# p @routes
+# p @stations
+
+create_train
+add_route_to_train
+# create_train
+p @trains
+# p @trains.values[0].type
+# p @trains.values[1].type
