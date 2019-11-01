@@ -14,6 +14,20 @@ require_relative 'lib/repos/station_repo'
 require_relative 'lib/repos/route_repo'
 require_relative 'lib/repos/train_repo'
 
+require_relative 'lib/services/service.rb'
+require_relative 'lib/services/station_service.rb'
+
+station_repo = StationRepo.new
+
+station_options = { repo: station_repo, entity: Station }
+
+station_service = StationService.new(station_options)
+
+station_service.create_station_console
+station_service.create_station_console
+station_service.create_station_console
+station_service.show_stations
+
 @stations = {}
 @routes = []
 @trains = {}
@@ -99,43 +113,6 @@ def move_train_process(train) #----------ADD
     move_train_process(train)
   end
   move_train_process(train)
-end
-
-def create_station(name) #----------ADD
-  station = Station.new(name)
-  @stations[name] = station
-  station
-end
-
-def create_station_console #----------ADD
-  puts 'enter station name'
-
-  name = gets.chomp
-  create_station_console if name == ''
-
-  if @stations.keys.include?(name)
-    puts 'there is already such a station'
-    create_station_console
-  else
-    create_station(name)
-  end
-end
-
-def show_station_trains #------------ADD
-  if @stations.empty?
-    puts 'there is no stations'
-    return
-  end
-
-  puts 'enter index of station or X to exit'
-
-  station_index = input_index(@stations.keys)
-  @stations.values[station_index.to_i].show_trains
-end
-
-# add search by route?
-def show_stations #-------------------ADD
-  @stations.keys.each { |name| puts name }
 end
 
 def show_routes #-------------------ADD
