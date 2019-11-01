@@ -1,0 +1,2 @@
+class TrainRepo < Repo
+end

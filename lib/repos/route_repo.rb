@@ -1,0 +1,2 @@
+class RouteRepo < Repo
+end
