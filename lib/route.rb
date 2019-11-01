@@ -14,7 +14,11 @@ class Route
   end
 
   def add_station(station, position = -2)
-    stations.insert(position, station)
+    if stations.include?(station)
+      puts 'This station is already in route'
+    else
+      stations.insert(position, station)
+    end
   end
 
   def show_stations

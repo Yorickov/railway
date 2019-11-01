@@ -9,6 +9,11 @@ require_relative 'lib/carriage'
 require_relative 'lib/passenger_carriage'
 require_relative 'lib/cargo_carriage'
 
+require_relative 'lib/repos/repo'
+require_relative 'lib/repos/station_repo'
+require_relative 'lib/repos/route_repo'
+require_relative 'lib/repos/train_repo'
+
 @stations = {}
 @routes = []
 @trains = {}
@@ -16,7 +21,7 @@ require_relative 'lib/cargo_carriage'
 @train_types = { 'passenger' => PassengerTrain, 'cargo' => CargoTrain }
 @carriage_types = { 'passenger' => PassengerCarriage, 'cargo' => CargoCarriage }
 
-def create_train(type = nil)
+def create_train(type = nil) #----------ADD
   puts 'Enter train number'
 
   train_id = gets.chomp
@@ -41,7 +46,7 @@ def create_train(type = nil)
   end
 end
 
-def input_index(array)
+def input_index(array) #----------ADD
   array.each.with_index(1) do |item, index|
     puts "\t#{index}. #{item}"
   end
@@ -50,7 +55,7 @@ def input_index(array)
   choice.between?(0, array.size - 1) ? choice : input_index(array)
 end
 
-def add_route_to_train(train = nil)
+def add_route_to_train(train = nil) #----------ADD
   if @routes.empty?
     puts 'there is no routes'
   elsif @trains.empty?
@@ -64,7 +69,7 @@ def add_route_to_train(train = nil)
   end
 end
 
-def find_train
+def find_train #----------ADD
   puts 'Choose train by the index'
 
   str_trains = @trains.values.map(&:info)
@@ -78,7 +83,7 @@ def move_train
   move_train_process(train)
 end
 
-def move_train_process(train)
+def move_train_process(train) #----------ADD
   puts 'enter F to move train forwards, B - backwards or X to exit'
 
   choice = gets.chomp.downcase
@@ -96,13 +101,13 @@ def move_train_process(train)
   move_train_process(train)
 end
 
-def create_station(name)
+def create_station(name) #----------ADD
   station = Station.new(name)
   @stations[name] = station
   station
 end
 
-def create_station_console
+def create_station_console #----------ADD
   puts 'enter station name'
 
   name = gets.chomp
@@ -116,7 +121,7 @@ def create_station_console
   end
 end
 
-def show_station_trains
+def show_station_trains #------------ADD
   if @stations.empty?
     puts 'there is no stations'
     return
@@ -129,15 +134,15 @@ def show_station_trains
 end
 
 # add search by route?
-def show_stations
+def show_stations #-------------------ADD
   @stations.keys.each { |name| puts name }
 end
 
-def show_routes
+def show_routes #-------------------ADD
   @routes.each { |r| puts r.show_stations }
 end
 
-def create_route
+def create_route #-------------------ADD
   puts 'add first station'
   first_station = choose_station
 
@@ -150,7 +155,7 @@ def create_route
   add_route(route)
 end
 
-def choose_station
+def choose_station #-------------------ADD
   if @stations.size <= 1
     puts 'there is no stations'
     return
@@ -162,7 +167,7 @@ def choose_station
   @stations.values[station_index]
 end
 
-def add_route(route)
+def add_route(route) #-------------------ADD
   if @routes.any? { |r| r.station_list == route.station_list }
     puts 'there is already such a route'
   else
@@ -170,7 +175,7 @@ def add_route(route)
   end
 end
 
-def add_station_console(route)
+def add_station_console(route) #-------------------ADD
   puts 'enter Y to add station or N to exit'
 
   choice = gets.chomp.downcase
@@ -180,7 +185,7 @@ def add_station_console(route)
   add_station_console(route)
 end
 
-def update_route
+def update_route #-------------------ADD
   if @routes.empty?
     puts 'there is no routes'
     return
@@ -190,7 +195,7 @@ def update_route
   update_by_type(route)
 end
 
-def find_route
+def find_route #-------------------ADD
   puts 'Choose route by the index'
 
   str_routes = @routes.map { |r| r.station_list.join(', ') } # TODO
@@ -199,7 +204,7 @@ def find_route
   @routes[route_index]
 end
 
-def delete_station_console(route)
+def delete_station_console(route) #-------------------ADD
   puts "enter station to delete:\n#{route.show_stations}"
   choice = gets.chomp.downcase
 
@@ -207,7 +212,7 @@ def delete_station_console(route)
   route.delete_station(@stations[choice])
 end
 
-def update_by_type(route)
+def update_by_type(route) #-------------------ADD
   puts 'enter A to add station, D to delete S to show station or X to exit'
   choice = gets.chomp.downcase
   return if choice == 'x'
@@ -225,7 +230,7 @@ def update_by_type(route)
   update_by_type(route)
 end
 
-def create_carriage
+def create_carriage #-------------------ADD
   puts 'enter carriage type'
 
   type_index = input_index(@carriage_types.keys)
@@ -238,7 +243,7 @@ def manage_carriages
   manage_carriages_process(train)
 end
 
-def manage_carriages_process(train)
+def manage_carriages_process(train) #-------------------ADD
   puts 'enter A to add carriage, D to remove or X to exit'
 
   choice = gets.chomp.downcase
@@ -256,93 +261,93 @@ def manage_carriages_process(train)
   manage_carriages_process(train)
 end
 
-def station_management
-  puts "Enter C to create station,\n" \
-  "T to show trains on station,\n" \
-  'A to show all stations or X to exit'
+# def station_management
+#   puts "Enter C to create station,\n" \
+#   "T to show trains on station,\n" \
+#   'A to show all stations or X to exit'
 
-  choice = gets.chomp.downcase
+#   choice = gets.chomp.downcase
 
-  case choice
-  when 'c'
-    create_station_console
-  when 't'
-    show_station_trains
-  when 'a'
-    show_stations
-  when 'x'
-    return
-  else
-    station_management
-  end
-  station_management
-end
+#   case choice
+#   when 'c'
+#     create_station_console
+#   when 't'
+#     show_station_trains
+#   when 'a'
+#     show_stations
+#   when 'x'
+#     return
+#   else
+#     station_management
+#   end
+#   station_management
+# end
 
-def route_management
-  puts "Enter C to create route, U to update route\n" \
-  "R - to show all routes\n or X to exit"
+# def route_management
+#   puts "Enter C to create route, U to update route\n" \
+#   "R - to show all routes\n or X to exit"
 
-  choice = gets.chomp.downcase
+#   choice = gets.chomp.downcase
 
-  case choice
-  when 'c'
-    create_route
-  when 'u'
-    update_route
-  when 'r'
-    show_routes
-  when 'x'
-    return
-  else
-    route_management
-  end
-  route_management
-end
+#   case choice
+#   when 'c'
+#     create_route
+#   when 'u'
+#     update_route
+#   when 'r'
+#     show_routes
+#   when 'x'
+#     return
+#   else
+#     route_management
+#   end
+#   route_management
+# end
 
-def train_management
-  puts "Enter C to create train, A to add route\n" \
-  "U - to change carriages, M - to move train\n" \
-  'or X to exit'
+# def train_management
+#   puts "Enter C to create train, A to add route\n" \
+#   "U - to change carriages, M - to move train\n" \
+#   'or X to exit'
 
-  choice = gets.chomp.downcase
+#   choice = gets.chomp.downcase
 
-  case choice
-  when 'c'
-    create_train
-  when 'a'
-    add_route_to_train
-  when 'u'
-    manage_carriages
-  when 'm'
-    move_train
-  when 'x'
-    return
-  else
-    train_management
-  end
-  train_management
-end
+#   case choice
+#   when 'c'
+#     create_train
+#   when 'a'
+#     add_route_to_train
+#   when 'u'
+#     manage_carriages
+#   when 'm'
+#     move_train
+#   when 'x'
+#     return
+#   else
+#     train_management
+#   end
+#   train_management
+# end
 
-def start
-  puts "Enter S to go to Station Management,\n" \
-  "R - to Route Management, T - to Train management\n" \
-  'or X to exit'
+# def start
+#   puts "Enter S to go to Station Management,\n" \
+#   "R - to Route Management, T - to Train management\n" \
+#   'or X to exit'
 
-  choice = gets.chomp.downcase
+#   choice = gets.chomp.downcase
 
-  case choice
-  when 's'
-    station_management
-  when 'r'
-    route_management
-  when 't'
-    train_management
-  when 'x'
-    return
-  else
-    start
-  end
-  start
-end
+#   case choice
+#   when 's'
+#     station_management
+#   when 'r'
+#     route_management
+#   when 't'
+#     train_management
+#   when 'x'
+#     return
+#   else
+#     start
+#   end
+#   start
+# end
 
 # start

@@ -23,4 +23,8 @@ class Station
   def send_train(train)
     trains.delete(train)
   end
+
+  # def train_list
+  #   trains.map(&:id)
+  # end
 end
