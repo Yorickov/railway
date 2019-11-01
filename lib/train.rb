@@ -22,7 +22,7 @@ class Train
   def add_carriage(carriage)
     if speed.positive?
       puts 'train is running'
-    elsif type != carriage.type
+    elsif !valid_carriage?(carriage)
       puts 'wrong carriage'
     else
       @carriages << carriage
