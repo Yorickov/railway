@@ -16,17 +16,24 @@ require_relative 'lib/repos/train_repo'
 
 require_relative 'lib/services/service.rb'
 require_relative 'lib/services/station_service.rb'
+require_relative 'lib/services/route_service.rb'
 
 station_repo = StationRepo.new
+route_repo = RouteRepo.new
 
 station_options = { repo: station_repo, entity: Station }
+route_options = { route_repo: route_repo, station_repo: station_repo, entity: Route }
 
 station_service = StationService.new(station_options)
+route_service = RouteService.new(route_options)
 
 station_service.create_station_console
 station_service.create_station_console
 station_service.create_station_console
 station_service.show_stations
+
+route_service.create_route
+route_service.show_routes
 
 @stations = {}
 @routes = []
@@ -113,98 +120,6 @@ def move_train_process(train) #----------ADD
     move_train_process(train)
   end
   move_train_process(train)
-end
-
-def show_routes #-------------------ADD
-  @routes.each { |r| puts r.show_stations }
-end
-
-def create_route #-------------------ADD
-  puts 'add first station'
-  first_station = choose_station
-
-  puts 'add last station'
-  last_station = choose_station
-
-  route = Route.new(first_station, last_station)
-
-  add_station_console(route)
-  add_route(route)
-end
-
-def choose_station #-------------------ADD
-  if @stations.size <= 1
-    puts 'there is no stations'
-    return
-  end
-
-  puts 'enter index of station or X to exit'
-
-  station_index = input_index(@stations.keys)
-  @stations.values[station_index]
-end
-
-def add_route(route) #-------------------ADD
-  if @routes.any? { |r| r.station_list == route.station_list }
-    puts 'there is already such a route'
-  else
-    @routes.push(route)
-  end
-end
-
-def add_station_console(route) #-------------------ADD
-  puts 'enter Y to add station or N to exit'
-
-  choice = gets.chomp.downcase
-  return if choice == 'n'
-
-  route.add_station(create_station_console) if choice == 'y' # position?
-  add_station_console(route)
-end
-
-def update_route #-------------------ADD
-  if @routes.empty?
-    puts 'there is no routes'
-    return
-  end
-
-  route = find_route
-  update_by_type(route)
-end
-
-def find_route #-------------------ADD
-  puts 'Choose route by the index'
-
-  str_routes = @routes.map { |r| r.station_list.join(', ') } # TODO
-  route_index = input_index(str_routes)
-
-  @routes[route_index]
-end
-
-def delete_station_console(route) #-------------------ADD
-  puts "enter station to delete:\n#{route.show_stations}"
-  choice = gets.chomp.downcase
-
-  delete_station_console(route) unless route.stations.any? { |s| s.name == choice }
-  route.delete_station(@stations[choice])
-end
-
-def update_by_type(route) #-------------------ADD
-  puts 'enter A to add station, D to delete S to show station or X to exit'
-  choice = gets.chomp.downcase
-  return if choice == 'x'
-
-  case choice
-  when 'a'
-    add_station_console(route)
-  when 'd'
-    delete_station_console(route)
-  when 's'
-    puts route.show_stations
-  else
-    update_by_type(route)
-  end
-  update_by_type(route)
 end
 
 def create_carriage #-------------------ADD
