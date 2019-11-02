@@ -33,6 +33,8 @@ class Route
     end
   end
 
+  private
+
   def station_list
     stations.map(&:name)
   end

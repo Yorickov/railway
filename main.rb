@@ -51,17 +51,3 @@ manager_options = {
 
 manager = Manager.new(manager_options)
 manager.start
-
-# station_service.create_station_console
-# station_service.create_station_console
-# # station_service.create_station_console
-# station_service.show_stations
-
-# route_service.create_route
-# route_service.create_route
-# route_service.show_routes
-
-# train_service.create_train
-# # train_service.add_route_to_train
-# train_service.manage_carriages
-# train_service.move_train

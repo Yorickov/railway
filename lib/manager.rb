@@ -5,6 +5,31 @@ class Manager
     @train_service = options[:train_service]
   end
 
+  def start
+    puts "Enter S to go to Station Management,\n" \
+    "R - to Route Management, T - to Train management\n" \
+    'or X to exit'
+
+    choice = gets.chomp.downcase
+
+    case choice
+    when 's'
+      station_management
+    when 'r'
+      route_management
+    when 't'
+      train_management
+    when 'x'
+      return
+    else
+      start
+    end
+
+    start
+  end
+
+  private
+
   def station_management
     puts "Enter C to create station,\n" \
     "T to show trains on station,\n" \
@@ -72,28 +97,5 @@ class Manager
       train_management
     end
     train_management
-  end
-
-  def start
-    puts "Enter S to go to Station Management,\n" \
-    "R - to Route Management, T - to Train management\n" \
-    'or X to exit'
-
-    choice = gets.chomp.downcase
-
-    case choice
-    when 's'
-      station_management
-    when 'r'
-      route_management
-    when 't'
-      train_management
-    when 'x'
-      return
-    else
-      start
-    end
-
-    start
   end
 end

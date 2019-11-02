@@ -3,6 +3,8 @@ class CargoTrain < Train
     'cargo'
   end
 
+  private
+
   def valid_carriage?(carriage)
     carriage.class == CargoCarriage
   end

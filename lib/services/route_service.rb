@@ -1,6 +1,4 @@
 class RouteService < Service
-  attr_reader :route_repo, :station_repo
-
   def initialize(options)
     @route_repo = options[:route_repo]
     @station_repo = options[:station_repo]
@@ -23,6 +21,20 @@ class RouteService < Service
     route_repo.data.each { |r| puts r.show_stations }
   end
 
+  def update_route
+    if route_repo.data.empty?
+      puts 'there is no routes'
+      return
+    end
+
+    route = find_route
+    update_by_type(route)
+  end
+
+  private
+
+  attr_reader :route_repo, :station_repo
+
   def choose_station
     if station_repo.data.size <= 1
       puts 'there is no stations'
@@ -35,6 +47,14 @@ class RouteService < Service
     station_repo.data[station_index]
   end
 
+  def add_route(route)
+    if route_repo.data.any? { |r| r.show_stations == route.show_stations }
+      puts 'there is already such a route'
+    else
+      route_repo.save(route)
+    end
+  end
+
   def add_station_console(route)
     puts 'enter Y to add station or N to exit'
 
@@ -43,33 +63,6 @@ class RouteService < Service
 
     route.add_station(choose_station) if choice == 'y' # position?
     add_station_console(route)
-  end
-
-  def add_route(route)
-    if route_repo.data.any? { |r| r.station_list == route.station_list }
-      puts 'there is already such a route'
-    else
-      route_repo.save(route)
-    end
-  end
-
-  def update_route
-    if route_repo.data.empty?
-      puts 'there is no routes'
-      return
-    end
-
-    route = find_route
-    update_by_type(route)
-  end
-
-  def find_route
-    puts 'Choose route by the index'
-
-    str_routes = route_repo.data.map { |r| r.station_list.join(', ') } # TODO
-    route_index = input_index(str_routes)
-
-    route_repo.find_by_index(route_index)
   end
 
   def delete_station_console(route)
@@ -98,5 +91,14 @@ class RouteService < Service
       update_by_type(route)
     end
     update_by_type(route)
+  end
+
+  def find_route
+    puts 'Choose route by the index'
+
+    str_routes = route_repo.data.map(&:show_stations)
+    route_index = input_index(str_routes)
+
+    route_repo.find_by_index(route_index)
   end
 end

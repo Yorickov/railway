@@ -1,6 +1,4 @@
 class TrainService < Service
-  attr_reader :train_repo, :route_repo
-
   def initialize(options)
     @train_repo = options[:train_repo]
     @route_repo = options[:route_repo]
@@ -45,10 +43,24 @@ class TrainService < Service
     end
   end
 
+  def move_train
+    train = find_train
+    move_train_process(train)
+  end
+
+  def manage_carriages
+    train = find_train
+    manage_carriages_process(train)
+  end
+
+  private
+
+  attr_reader :train_repo, :route_repo
+
   def find_route
     puts 'Choose route by the index'
 
-    str_routes = route_repo.data.map { |r| r.station_list.join(', ') } # TODO
+    str_routes = route_repo.data.map(&:show_stations)
     route_index = input_index(str_routes)
 
     route_repo.find_by_index(route_index)
@@ -61,11 +73,6 @@ class TrainService < Service
     train_index = input_index(str_trains)
 
     train_repo.find_by_index(train_index)
-  end
-
-  def move_train
-    train = find_train
-    move_train_process(train)
   end
 
   def move_train_process(train)
@@ -86,19 +93,6 @@ class TrainService < Service
     move_train_process(train)
   end
 
-  def create_carriage
-    puts 'enter carriage type'
-
-    type_index = input_index(@entity_carriage.types.keys)
-    type = @entity_carriage.types.keys[type_index]
-    @entity_carriage.types[type].new
-  end
-
-  def manage_carriages
-    train = find_train
-    manage_carriages_process(train)
-  end
-
   def manage_carriages_process(train)
     puts 'enter A to add carriage, D to remove or X to exit'
 
@@ -115,5 +109,13 @@ class TrainService < Service
       manage_carriages_process(train)
     end
     manage_carriages_process(train)
+  end
+
+  def create_carriage
+    puts 'enter carriage type'
+
+    type_index = input_index(@entity_carriage.types.keys)
+    type = @entity_carriage.types.keys[type_index]
+    @entity_carriage.types[type].new
   end
 end

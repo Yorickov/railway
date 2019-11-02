@@ -1,6 +1,4 @@
 class StationService < Service
-  attr_reader :repo
-
   def initialize(options)
     @repo = options[:repo]
     @entity = options[:entity]
@@ -20,12 +18,6 @@ class StationService < Service
     end
   end
 
-  def create_station(name)
-    station = @entity.new(name)
-    repo.save(station)
-    station
-  end
-
   def show_station_trains
     if repo.data.empty?
       puts 'there is no stations'
@@ -41,5 +33,15 @@ class StationService < Service
   # add search by route?
   def show_stations
     repo.stations_list.each { |name| puts name }
+  end
+
+  private
+
+  attr_reader :repo
+
+  def create_station(name)
+    station = @entity.new(name)
+    repo.save(station)
+    station
   end
 end

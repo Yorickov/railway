@@ -1,4 +1,6 @@
 class Service
+  protected
+
   def input_index(array)
     array.each.with_index(1) { |item, index| puts "\t#{index}. #{item}" }
 
