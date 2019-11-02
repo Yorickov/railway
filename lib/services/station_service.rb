@@ -32,7 +32,7 @@ class StationService < Service
       return
     end
 
-    puts 'enter index of station or X to exit'
+    puts 'enter index of station or X to exit' # TODO
 
     station_index = input_index(repo.stations_list)
     repo.data[station_index.to_i].show_trains

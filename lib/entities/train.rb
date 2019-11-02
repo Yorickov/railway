@@ -1,4 +1,8 @@
 class Train
+  def self.types
+    { passenger: PassengerTrain, cargo: CargoTrain }
+  end
+
   attr_reader :id, :speed, :current_station, :route
 
   def initialize(id)
@@ -67,9 +71,10 @@ class Train
 
   def info
     if @route
-      "Train No #{id}, #{route.first_station.name} - #{route.last_station.name}"
+      "Train No #{id}, type: #{type}, " \
+      "#{route.first_station.name} - #{route.last_station.name}"
     else
-      "Train No #{id}"
+      "Train No #{id}, type: #{type}"
     end
   end
 

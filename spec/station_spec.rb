@@ -1,8 +1,8 @@
-require 'station'
-require 'train'
-require 'passenger_train'
-require 'cargo_train'
-require 'route'
+require 'entities/station'
+require 'entities/train'
+require 'entities/passenger_train'
+require 'entities/cargo_train'
+require 'entities/route'
 
 describe Station do
   before(:context) do
@@ -25,18 +25,19 @@ describe Station do
   end
 
   it 'show trains' do
-    str = "Train No 1, Boston - NY\nTrain No 2, Boston - NY\n"
+    str = "Train No 1, type: passenger, Boston - NY\n" \
+    "Train No 2, type: cargo, Boston - NY\n"
     expect { @station.show_trains }.to output(str).to_stdout
   end
 
   it 'show passenger trains' do
     expect { @station.show_trains_by_type('passenger') }
-      .to output("Train No 1, Boston - NY\n").to_stdout
+      .to output("Train No 1, type: passenger, Boston - NY\n").to_stdout
   end
 
   it 'show cargo trains' do
     expect { @station.show_trains_by_type('cargo') }
-      .to output("Train No 2, Boston - NY\n").to_stdout
+      .to output("Train No 2, type: cargo, Boston - NY\n").to_stdout
   end
 
   it 'send train' do

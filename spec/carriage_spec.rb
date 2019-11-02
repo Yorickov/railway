@@ -1,6 +1,6 @@
-require 'carriage'
-require 'passenger_carriage'
-require 'cargo_carriage'
+require 'entities/carriage'
+require 'entities/passenger_carriage'
+require 'entities/cargo_carriage'
 
 describe 'carriage classes type-checking' do
   it 'passenger' do

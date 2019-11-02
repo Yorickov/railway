@@ -1,4 +1,4 @@
-require 'station'
+require 'entities/station'
 require 'repos/repo'
 require 'repos/station_repo'
 

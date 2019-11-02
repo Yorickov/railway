@@ -1,5 +1,5 @@
-require 'route'
-require 'station'
+require 'entities/route'
+require 'entities/station'
 
 describe Route do
   before(:context) do

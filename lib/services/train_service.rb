@@ -1,13 +1,11 @@
 class TrainService < Service
-  TRAIN_TYPES = { 'passenger' => PassengerTrain, 'cargo' => CargoTrain }.freeze
-  CARRIAGE_TYPES = { 'passenger' => PassengerCarriage, 'cargo' => CargoCarriage }.freeze
-
   attr_reader :train_repo, :route_repo
 
   def initialize(options)
     @train_repo = options[:train_repo]
     @route_repo = options[:route_repo]
-    @entity = options[:entity]
+    @entity_train = options[:entity_train]
+    @entity_carriage = options[:entity_carriage]
   end
 
   def create_train
@@ -21,9 +19,9 @@ class TrainService < Service
     else
       puts 'Choose train type (enter index'
 
-      type_index = input_index(TrainService::TRAIN_TYPES.keys)
-      type = TrainService::TRAIN_TYPES.keys[type_index]
-      train = TrainService::TRAIN_TYPES[type].new(train_id)
+      type_index = input_index(@entity_train.types.keys)
+      type = @entity_train.types.keys[type_index]
+      train = @entity_train.types[type].new(train_id)
 
       train_repo.save(train)
       puts 'Enter A if you add route to train'
@@ -91,9 +89,9 @@ class TrainService < Service
   def create_carriage
     puts 'enter carriage type'
 
-    type_index = input_index(TrainService::CARRIAGE_TYPES.keys)
-    type = TrainService::CARRIAGE_TYPES.keys[type_index]
-    TrainService::CARRIAGE_TYPES[type].new
+    type_index = input_index(@entity_carriage.types.keys)
+    type = @entity_carriage.types.keys[type_index]
+    @entity_carriage.types[type].new
   end
 
   def manage_carriages

@@ -1,11 +1,11 @@
-require 'route'
-require 'station'
-require 'train'
-require 'passenger_train'
-require 'cargo_train'
-require 'carriage'
-require 'passenger_carriage'
-require 'cargo_carriage'
+require 'entities/route'
+require 'entities/station'
+require 'entities/train'
+require 'entities/passenger_train'
+require 'entities/cargo_train'
+require 'entities/carriage'
+require 'entities/passenger_carriage'
+require 'entities/cargo_carriage'
 
 describe Train, '#speed_methods' do
   before(:context) do
