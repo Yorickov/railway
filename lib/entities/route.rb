@@ -1,4 +1,8 @@
+require_relative '../modules/instance_counter'
+
 class Route
+  include InstanceCounter
+
   @@routes = []
 
   def self.all
@@ -10,6 +14,8 @@ class Route
   def initialize(first_station, last_station)
     @stations = [first_station, last_station]
     @@routes << self
+
+    register_instance
   end
 
   def first_station

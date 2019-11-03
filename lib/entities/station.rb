@@ -1,4 +1,8 @@
+require_relative '../modules/instance_counter'
+
 class Station
+  include InstanceCounter
+
   @@stations = []
 
   def self.all
@@ -19,6 +23,8 @@ class Station
     @name = name
     @trains = []
     @@stations << self
+
+    register_instance
   end
 
   def add_train(train)

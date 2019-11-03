@@ -16,7 +16,7 @@ describe Route do
     end
 
     it 'all stations' do
-      expect(Route.all.size).to eq(1)
+      expect(Route.all).to include(@route)
     end
 
     it 'show stations' do
