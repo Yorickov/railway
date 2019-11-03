@@ -7,10 +7,10 @@ class Train
     { passenger: PassengerTrain, cargo: CargoTrain }
   end
 
-  attr_reader :id, :speed, :current_station, :route
+  attr_reader :number, :speed, :current_station, :route
 
-  def initialize(id)
-    @id = id
+  def initialize(number)
+    @number = number
     @carriages = []
     @speed = 0
   end
@@ -75,21 +75,16 @@ class Train
 
   def info
     if @route
-      "Train No #{id}, type: #{type}, " \
+      "Train No #{number}, type: #{type}, " \
       "#{route.first_station.name} - #{route.last_station.name}"
     else
-      "Train No #{id}, type: #{type}"
+      "Train No #{number}, type: #{type}"
     end
   end
 
   protected
 
-  # не нужен для интерфейса, для подсчета вагонов введен carriages_count
-
   attr_reader :carriages
-
-  # внутренние методы, которые используют или будуть использовать
-  # интерфейсные - to_next_station, show_next_station, etc
 
   def next_station
     return if route.last_station == current_station

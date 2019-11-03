@@ -9,9 +9,9 @@ class TrainService < Service
   def create_train
     puts 'Enter train number'
 
-    train_id = gets.chomp
+    train_number = gets.chomp
 
-    if train_repo.trains_list.include?(train_id)
+    if train_repo.trains_list.include?(train_number)
       puts 'there is already such a number'
       create_train
     else
@@ -19,7 +19,7 @@ class TrainService < Service
 
       type_index = input_index(@entity_train.types.keys)
       type = @entity_train.types.keys[type_index]
-      train = @entity_train.types[type].new(train_id)
+      train = @entity_train.types[type].new(train_number)
 
       train_repo.save(train)
       puts 'Enter A if you add route to train'

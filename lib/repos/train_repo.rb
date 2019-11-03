@@ -1,5 +1,5 @@
 class TrainRepo < Repo
   def trains_list
-    data.map(&:id)
+    data.map(&:number)
   end
 end
