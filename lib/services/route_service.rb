@@ -1,8 +1,7 @@
 class RouteService < Service
   def initialize(options)
-    @route_repo = options[:route_repo]
-    @station_klass = options[:station_klass]
     @route_klass = options[:route_klass]
+    @station_klass = options[:station_klass]
   end
 
   def create_route
@@ -14,15 +13,14 @@ class RouteService < Service
 
     route = @route_klass.new(first_station, last_station)
     add_station_console(route)
-    add_route(route)
   end
 
   def show_routes
-    route_repo.data.each { |r| puts r.show_stations }
+    route_klass.all.each { |r| puts r.show_stations }
   end
 
   def update_route
-    if route_repo.data.empty?
+    if route_klass.all.empty?
       puts 'there is no routes'
       return
     end
@@ -33,7 +31,7 @@ class RouteService < Service
 
   private
 
-  attr_reader :route_repo, :station_klass
+  attr_reader :route_klass, :station_klass
 
   def choose_station
     if station_klass.all.size <= 1
@@ -45,14 +43,6 @@ class RouteService < Service
 
     station_index = input_index(station_klass.stations_list)
     station_klass.all[station_index]
-  end
-
-  def add_route(route)
-    if route_repo.data.any? { |r| r.show_stations == route.show_stations }
-      puts 'there is already such a route'
-    else
-      route_repo.save(route)
-    end
   end
 
   def add_station_console(route)
@@ -96,9 +86,9 @@ class RouteService < Service
   def find_route
     puts 'Choose route by the index'
 
-    str_routes = route_repo.data.map(&:show_stations)
+    str_routes = route_klass.all.map(&:show_stations)
     route_index = input_index(str_routes)
 
-    route_repo.find_by_index(route_index)
+    route_klass.all[route_index]
   end
 end

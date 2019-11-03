@@ -1,8 +1,15 @@
 class Route
+  @@routes = []
+
+  def self.all
+    @@routes
+  end
+
   attr_reader :stations
 
   def initialize(first_station, last_station)
     @stations = [first_station, last_station]
+    @@routes << self
   end
 
   def first_station

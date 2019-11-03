@@ -1,9 +1,9 @@
 class TrainService < Service
   def initialize(options)
     @train_repo = options[:train_repo]
-    @route_repo = options[:route_repo]
     @entity_train = options[:entity_train]
     @entity_carriage = options[:entity_carriage]
+    @route_klass = options[:route_klass]
   end
 
   def create_train
@@ -30,7 +30,7 @@ class TrainService < Service
   end
 
   def add_route_to_train(train = nil)
-    if route_repo.data.empty?
+    if route_klass.all.empty?
       puts 'there is no routes'
     elsif train_repo.data.empty?
       puts 'there is no trains'
@@ -55,15 +55,15 @@ class TrainService < Service
 
   private
 
-  attr_reader :train_repo, :route_repo
+  attr_reader :train_repo, :route_klass
 
   def find_route
     puts 'Choose route by the index'
 
-    str_routes = route_repo.data.map(&:show_stations)
+    str_routes = route_klass.all.map(&:show_stations)
     route_index = input_index(str_routes)
 
-    route_repo.find_by_index(route_index)
+    route_klass.all[route_index]
   end
 
   def find_train

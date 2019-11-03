@@ -15,6 +15,10 @@ describe Route do
       expect(@route.stations).to include(@new_station)
     end
 
+    it 'all stations' do
+      expect(Route.all.size).to eq(1)
+    end
+
     it 'show stations' do
       expect(@route.show_stations).to eq('Boston - Dallas - San Antonio')
     end

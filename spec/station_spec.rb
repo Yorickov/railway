@@ -28,6 +28,10 @@ describe Station do
     expect(Station.all).to include(@station, @first_station, @last_station)
   end
 
+  it 'find all stations' do
+    expect(Station.find('Boston').name).to eq('Boston')
+  end
+
   it 'show trains' do
     str = "Train No 1, type: passenger, Boston - NY\n" \
     "Train No 2, type: cargo, Boston - NY\n"
