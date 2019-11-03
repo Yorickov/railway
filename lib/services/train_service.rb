@@ -1,8 +1,7 @@
 class TrainService < Service
   def initialize(options)
-    @train_repo = options[:train_repo]
-    @entity_train = options[:entity_train]
-    @entity_carriage = options[:entity_carriage]
+    @train_klass = options[:train_klass]
+    @carriage_klass = options[:carriage_klass]
     @route_klass = options[:route_klass]
   end
 
@@ -11,17 +10,16 @@ class TrainService < Service
 
     train_number = gets.chomp
 
-    if train_repo.trains_list.include?(train_number)
+    if train_klass.trains_list.include?(train_number)
       puts 'there is already such a number'
       create_train
     else
       puts 'Choose train type (enter index'
 
-      type_index = input_index(@entity_train.types.keys)
-      type = @entity_train.types.keys[type_index]
-      train = @entity_train.types[type].new(train_number)
+      type_index = input_index(@train_klass.types.keys)
+      type = @train_klass.types.keys[type_index]
+      train = @train_klass.types[type].new(train_number)
 
-      train_repo.save(train)
       puts 'Enter A if you add route to train'
 
       choice = gets.chomp.downcase
@@ -32,7 +30,7 @@ class TrainService < Service
   def add_route_to_train(train = nil)
     if route_klass.all.empty?
       puts 'there is no routes'
-    elsif train_repo.data.empty?
+    elsif train_klass.all.empty?
       puts 'there is no trains'
     else
       route = find_route
@@ -55,7 +53,7 @@ class TrainService < Service
 
   private
 
-  attr_reader :train_repo, :route_klass
+  attr_reader :train_klass, :route_klass
 
   def find_route
     puts 'Choose route by the index'
@@ -69,10 +67,10 @@ class TrainService < Service
   def find_train
     puts 'Choose train by the index'
 
-    str_trains = train_repo.data.map(&:info)
+    str_trains = train_klass.all.map(&:info)
     train_index = input_index(str_trains)
 
-    train_repo.find_by_index(train_index)
+    train_klass.all[train_index]
   end
 
   def move_train_process(train)
@@ -114,8 +112,8 @@ class TrainService < Service
   def create_carriage
     puts 'enter carriage type'
 
-    type_index = input_index(@entity_carriage.types.keys)
-    type = @entity_carriage.types.keys[type_index]
-    @entity_carriage.types[type].new
+    type_index = input_index(@carriage_klass.types.keys)
+    type = @carriage_klass.types.keys[type_index]
+    @carriage_klass.types[type].new
   end
 end

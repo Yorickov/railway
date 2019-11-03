@@ -21,6 +21,14 @@ describe Train, '#speed_methods' do
     @cargo_train.slow_down
     expect(@cargo_train.speed).to eq(0)
   end
+
+  it 'all trains' do
+    expect(Train.all).to include(@cargo_train)
+  end
+
+  it 'find train' do
+    expect(Train.find('1').number).to eq('1')
+  end
 end
 
 describe Train, '#carriage_methods' do

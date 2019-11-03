@@ -3,6 +3,20 @@ require_relative '../modules/company'
 class Train
   include Company
 
+  @@trains = []
+
+  def self.all
+    @@trains
+  end
+
+  def self.trains_list
+    @@trains.map(&:number)
+  end
+
+  def self.find(number)
+    @@trains.find { |t| t.number == number }
+  end
+
   def self.types
     { passenger: PassengerTrain, cargo: CargoTrain }
   end
@@ -13,6 +27,7 @@ class Train
     @number = number
     @carriages = []
     @speed = 0
+    @@trains << self
   end
 
   def speed_up(step = 1)

@@ -1,2 +1,0 @@
-class RouteRepo < Repo
-end
