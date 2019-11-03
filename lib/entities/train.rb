@@ -1,4 +1,8 @@
+require_relative '../modules/company'
+
 class Train
+  include Company
+
   def self.types
     { passenger: PassengerTrain, cargo: CargoTrain }
   end

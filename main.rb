@@ -26,6 +26,7 @@ route_repo = RouteRepo.new
 train_repo = TrainRepo.new
 
 station_options = { repo: station_repo, entity: Station }
+
 route_options = {
   route_repo: route_repo,
   station_repo: station_repo,
