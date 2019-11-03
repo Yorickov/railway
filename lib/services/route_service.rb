@@ -1,8 +1,8 @@
 class RouteService < Service
   def initialize(options)
     @route_repo = options[:route_repo]
-    @station_repo = options[:station_repo]
-    @entity = options[:entity]
+    @station_klass = options[:station_klass]
+    @route_klass = options[:route_klass]
   end
 
   def create_route
@@ -12,7 +12,7 @@ class RouteService < Service
     puts 'add last station'
     last_station = choose_station
 
-    route = @entity.new(first_station, last_station)
+    route = @route_klass.new(first_station, last_station)
     add_station_console(route)
     add_route(route)
   end
@@ -33,18 +33,18 @@ class RouteService < Service
 
   private
 
-  attr_reader :route_repo, :station_repo
+  attr_reader :route_repo, :station_klass
 
   def choose_station
-    if station_repo.data.size <= 1
+    if station_klass.all.size <= 1
       puts 'there is no stations'
       return
     end
 
     puts 'enter index of station or X to exit'
 
-    station_index = input_index(station_repo.stations_list)
-    station_repo.data[station_index]
+    station_index = input_index(station_klass.stations_list)
+    station_klass.all[station_index]
   end
 
   def add_route(route)
@@ -70,7 +70,7 @@ class RouteService < Service
     choice = gets.chomp.downcase
 
     delete_station_console(route) unless route.stations.any? { |s| s.name == choice }
-    station_to_delete = station_repo.data.find { |s| s.name == choice }
+    station_to_delete = station_klass.find(choice)
     route.delete_station(station_to_delete)
   end
 

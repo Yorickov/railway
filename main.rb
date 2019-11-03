@@ -21,16 +21,16 @@ require_relative 'lib/services/train_service'
 
 require_relative 'lib/manager'
 
-station_repo = StationRepo.new
+# station_repo = StationRepo.new
 route_repo = RouteRepo.new
 train_repo = TrainRepo.new
 
-station_options = { repo: station_repo, entity: Station }
+station_options = { station_klass: Station }
 
 route_options = {
   route_repo: route_repo,
-  station_repo: station_repo,
-  entity: Route
+  station_klass: Station,
+  route_klass: Route
 }
 
 train_options = {

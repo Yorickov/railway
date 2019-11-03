@@ -6,7 +6,7 @@ require 'entities/route'
 
 describe Station do
   before(:context) do
-    @station = Station.new('Boston')
+    @station = Station.new('Atlanta')
     @passenger_train = PassengerTrain.new('1')
     @cargo_train = CargoTrain.new('2')
 
@@ -22,6 +22,10 @@ describe Station do
     @station.add_train(@passenger_train)
     @station.add_train(@cargo_train)
     expect(@station.trains).to include(@passenger_train, @cargo_train)
+  end
+
+  it 'all stations' do
+    expect(Station.all).to include(@station, @first_station, @last_station)
   end
 
   it 'show trains' do

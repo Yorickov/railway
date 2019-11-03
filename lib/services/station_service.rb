@@ -1,7 +1,6 @@
 class StationService < Service
   def initialize(options)
-    @repo = options[:repo]
-    @entity = options[:entity]
+    @station_klass = options[:station_klass]
   end
 
   def create_station_console
@@ -10,7 +9,7 @@ class StationService < Service
     name = gets.chomp
     create_station_console if name == ''
 
-    if repo.data.any? { |s| s.name == name }
+    if station_klass.all.any? { |s| s.name == name }
       puts 'there is already such a station'
       create_station_console
     else
@@ -19,29 +18,28 @@ class StationService < Service
   end
 
   def show_station_trains
-    if repo.data.empty?
+    if station_klass.all.empty?
       puts 'there is no stations'
       return
     end
 
     puts 'enter index of station or X to exit' # TODO
 
-    station_index = input_index(repo.stations_list)
-    repo.data[station_index.to_i].show_trains
+    station_index = input_index(station_klass.stations_list)
+    station_klass.all[station_index.to_i].show_trains
   end
 
   # add search by route?
   def show_stations
-    repo.stations_list.each { |name| puts name }
+    station_klass.stations_list.each { |name| puts name }
   end
 
   private
 
-  attr_reader :repo
+  attr_reader :station_klass
 
   def create_station(name)
-    station = @entity.new(name)
-    repo.save(station)
+    station = @station_klass.new(name)
     station
   end
 end

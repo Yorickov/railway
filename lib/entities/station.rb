@@ -1,9 +1,24 @@
 class Station
+  @@stations = []
+
+  def self.all
+    @@stations
+  end
+
+  def self.stations_list
+    @@stations.map(&:name)
+  end
+
+  def self.find(name)
+    @@stations.find { |s| s.name == name }
+  end
+
   attr_reader :name, :trains
 
   def initialize(name)
     @name = name
     @trains = []
+    @@stations << self
   end
 
   def add_train(train)
@@ -23,8 +38,4 @@ class Station
   def send_train(train)
     trains.delete(train)
   end
-
-  # def train_list
-  #   trains.map(&:id)
-  # end
 end
