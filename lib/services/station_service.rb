@@ -9,7 +9,7 @@ class StationService < Service
     name = gets.chomp
     create_station_console if name == ''
 
-    if station_klass.all.any? { |s| s.name == name }
+    if station_klass.stations_list.include?(name)
       puts 'there is already such a station'
       create_station_console
     else
@@ -26,7 +26,7 @@ class StationService < Service
     puts 'enter index of station or X to exit' # TODO
 
     station_index = input_index(station_klass.stations_list)
-    station_klass.all[station_index.to_i].show_trains
+    station_klass.all.values[station_index.to_i].show_trains
   end
 
   # add search by route?

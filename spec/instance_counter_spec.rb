@@ -8,7 +8,7 @@ require 'entities/cargo_train'
 require 'modules/instance_counter'
 
 describe InstanceCounter do
-  it 'Train' do
+  it 'all in' do
     CargoTrain.new('1')
     CargoTrain.new('2')
     @station1 = Station.new('NY')

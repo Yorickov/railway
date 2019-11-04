@@ -42,7 +42,7 @@ class RouteService < Service
     puts 'enter index of station or X to exit'
 
     station_index = input_index(station_klass.stations_list)
-    station_klass.all[station_index]
+    station_klass.all.values[station_index]
   end
 
   def add_station_console(route)

@@ -28,26 +28,39 @@ class TrainService < Service
   end
 
   def add_route_to_train(train = nil)
-    if route_klass.all.empty?
+    route = find_route
+    unless route
       puts 'there is no routes'
-    elsif train_klass.all.empty?
-      puts 'there is no trains'
-    else
-      route = find_route
-      train ||= find_train
-
-      train.add_route = route
-      train
+      return
     end
+
+    train ||= find_train
+    unless train
+      puts 'there is no trains'
+      return
+    end
+
+    train.add_route = route
+    train
   end
 
   def move_train
     train = find_train
+    unless train
+      puts 'there is no trains'
+      return
+    end
+
     move_train_process(train)
   end
 
   def manage_carriages
     train = find_train
+    unless train
+      puts 'there is no trains'
+      return
+    end
+
     manage_carriages_process(train)
   end
 
@@ -56,6 +69,8 @@ class TrainService < Service
   attr_reader :train_klass, :route_klass
 
   def find_route
+    return if route_klass.all.empty?
+
     puts 'Choose route by the index'
 
     str_routes = route_klass.all.map(&:show_stations)
@@ -65,12 +80,14 @@ class TrainService < Service
   end
 
   def find_train
+    return if train_klass.all.empty?
+
     puts 'Choose train by the index'
 
-    str_trains = train_klass.all.map(&:info)
+    str_trains = train_klass.all.values.map(&:info)
     train_index = input_index(str_trains)
 
-    train_klass.all[train_index]
+    train_klass.all.values[train_index]
   end
 
   def move_train_process(train)

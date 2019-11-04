@@ -3,18 +3,18 @@ require_relative '../modules/instance_counter'
 class Station
   include InstanceCounter
 
-  @@stations = []
+  @@stations = {}
 
   def self.all
     @@stations
   end
 
   def self.stations_list
-    @@stations.map(&:name)
+    @@stations.keys
   end
 
   def self.find(name)
-    @@stations.find { |s| s.name == name }
+    @@stations[name]
   end
 
   attr_reader :name, :trains
@@ -22,7 +22,7 @@ class Station
   def initialize(name)
     @name = name
     @trains = []
-    @@stations << self
+    @@stations[name] = self
 
     register_instance
   end

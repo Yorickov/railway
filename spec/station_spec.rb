@@ -25,7 +25,7 @@ describe Station do
   end
 
   it 'all stations' do
-    expect(Station.all).to include(@station, @first_station, @last_station)
+    expect(Station.stations_list).to include('Boston', 'NY', 'Atlanta')
   end
 
   it 'find station' do

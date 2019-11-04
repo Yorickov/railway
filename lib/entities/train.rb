@@ -5,18 +5,18 @@ class Train
   include Company
   include InstanceCounter
 
-  @@trains = []
+  @@trains = {}
 
   def self.all
     @@trains
   end
 
   def self.trains_list
-    @@trains.map(&:number)
+    @@trains.keys
   end
 
   def self.find(number)
-    @@trains.find { |t| t.number == number }
+    @@trains[number]
   end
 
   def self.types
@@ -29,7 +29,7 @@ class Train
     @number = number
     @carriages = []
     @speed = 0
-    @@trains << self
+    @@trains[number] = self
 
     register_instance
   end

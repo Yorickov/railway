@@ -23,7 +23,7 @@ describe Train, '#speed_methods' do
   end
 
   it 'all trains' do
-    expect(Train.all).to include(@cargo_train)
+    expect(Train.trains_list).to include('1')
   end
 
   it 'find train' do

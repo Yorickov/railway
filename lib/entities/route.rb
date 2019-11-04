@@ -35,7 +35,7 @@ class Route
   end
 
   def show_stations
-    station_list.join(' - ')
+    stations_list.join(' - ')
   end
 
   def delete_station(station)
@@ -48,7 +48,7 @@ class Route
 
   private
 
-  def station_list
+  def stations_list
     stations.map(&:name)
   end
 
