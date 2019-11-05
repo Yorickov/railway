@@ -38,7 +38,7 @@ class StationService < Service
 
   attr_reader :station_klass
 
-  def create_station(name) # delete
+  def create_station(name)
     @station_klass.new(name)
   end
 end

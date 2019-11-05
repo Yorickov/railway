@@ -35,11 +35,9 @@ class Route
   end
 
   def add_station(station, position = -2)
-    if stations.include?(station)
-      puts 'This station is already in route'
-    else
-      stations.insert(position, station)
-    end
+    return if stations.include?(station)
+
+    stations.insert(position, station)
   end
 
   def show_stations
@@ -47,11 +45,9 @@ class Route
   end
 
   def delete_station(station)
-    if [first_station, last_station].include?(station)
-      puts 'station can not be removed'
-    else
-      stations.delete(station)
-    end
+    return if [first_station, last_station].include?(station)
+
+    stations.delete(station)
   end
 
   private

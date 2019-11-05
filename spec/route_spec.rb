@@ -31,15 +31,11 @@ describe Route do
 
   context 'wrong' do
     it 'delete first station' do
-      expect { @route.delete_station(@first_station) }
-        .to output("station can not be removed\n")
-        .to_stdout
+      expect(@route.delete_station(@first_station)).to be_nil
     end
 
     it 'delete last station' do
-      expect { @route.delete_station(@last_station) }
-        .to output("station can not be removed\n")
-        .to_stdout
+      expect(@route.delete_station(@last_station)).to be_nil
     end
   end
 end

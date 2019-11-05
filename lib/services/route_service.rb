@@ -46,12 +46,16 @@ class RouteService < Service
   end
 
   def add_station_console(route)
-    puts 'enter Y to add station or N to exit'
+    puts 'enter Y to add station or any key to exit'
 
     choice = gets.chomp.downcase
-    return if choice == 'n'
+    return if choice != 'y'
 
-    route.add_station(choose_station) if choice == 'y' # position?
+    unless route.add_station(choose_station) # position?
+      puts 'This station is already in route'
+      return
+    end
+
     add_station_console(route)
   end
 
@@ -61,11 +65,13 @@ class RouteService < Service
 
     delete_station_console(route) unless route.stations.any? { |s| s.name == choice }
     station_to_delete = station_klass.find(choice)
-    route.delete_station(station_to_delete)
+
+    deleted_station = route.delete_station(station_to_delete)
+    puts 'station can not be removed' unless deleted_station
   end
 
-  def update_by_type(route) # TODO fix multiply exit
-    puts 'enter A to add station, D to delete S to show station or X to exit'
+  def update_by_type(route)
+    puts 'enter A to add station, D to delete S to show route or X to exit'
 
     choice = gets.chomp.downcase
     return if choice == 'x'
