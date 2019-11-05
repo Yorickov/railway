@@ -3,28 +3,40 @@ require_relative '../modules/instance_counter'
 class Station
   include InstanceCounter
 
-  @@stations = {}
+  @@stations = []
+
+  NAME_FORMAT = /^[a-z0-9\- ]+$/i.freeze
+
+  attr_accessor :name
+  attr_reader :trains
 
   def self.all
     @@stations
   end
 
   def self.stations_list
-    @@stations.keys
+    @@stations.map(&:name)
   end
 
   def self.find(name)
-    @@stations[name]
+    @@stations.find { |s| s.name == name }
   end
-
-  attr_reader :name, :trains
 
   def initialize(name)
     @name = name
+    validate!
+
     @trains = []
-    @@stations[name] = self
+    @@stations << self
 
     register_instance
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
   end
 
   def add_train(train)
@@ -43,5 +55,14 @@ class Station
 
   def send_train(train)
     trains.delete(train)
+  end
+
+  protected
+
+  def validate!
+    raise 'You must input smth.' if name.strip.size.zero?
+    raise 'Name should not be more than 15 symbols' if name.strip.size > 15
+    raise 'Name has invalid format' if name.strip !~ NAME_FORMAT
+    # raise 'there is such a name' if self.class.stations_list.include?(name)
   end
 end

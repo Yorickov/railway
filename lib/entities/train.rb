@@ -7,6 +7,11 @@ class Train
 
   @@trains = {}
 
+  NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
+
+  attr_accessor :number
+  attr_reader :speed, :current_station, :route
+
   def self.all
     @@trains
   end
@@ -23,15 +28,22 @@ class Train
     { passenger: PassengerTrain, cargo: CargoTrain }
   end
 
-  attr_reader :number, :speed, :current_station, :route
-
   def initialize(number)
     @number = number
+    validate!
+
     @carriages = []
     @speed = 0
     @@trains[number] = self
 
     register_instance
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
   end
 
   def speed_up(step = 1)
@@ -104,6 +116,12 @@ class Train
   protected
 
   attr_reader :carriages
+
+  def validate!
+    raise 'You must input smth.' if number.strip.size.zero?
+    raise 'Name has invalid format' if number.strip !~ NUMBER_FORMAT
+    raise 'there is such a number' if self.class.trains_list.include?(number)
+  end
 
   def next_station
     return if route.last_station == current_station

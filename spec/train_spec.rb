@@ -9,7 +9,7 @@ require 'entities/cargo_carriage'
 
 describe Train, '#speed_methods' do
   before(:context) do
-    @cargo_train = CargoTrain.new('1')
+    @cargo_train = CargoTrain.new('121-22')
   end
 
   it 'speed up' do
@@ -23,19 +23,28 @@ describe Train, '#speed_methods' do
   end
 
   it 'all trains' do
-    expect(Train.trains_list).to include('1')
+    expect(Train.trains_list).to include('121-22')
   end
 
   it 'find train' do
-    expect(Train.find('1').number).to eq('1')
+    expect(Train.find('121-22').number).to eq('121-22')
   end
 end
 
 describe Train, '#carriage_methods' do
   before(:context) do
-    @passenger_train = PassengerTrain.new('1')
+    @passenger_train = PassengerTrain.new('1aw-23')
     @passenger_carriage = PassengerCarriage.new
     @cargo_carriage = CargoCarriage.new
+  end
+
+  it 'validate' do
+    expect { PassengerTrain.new('') }
+      .to raise_error('You must input smth.')
+    expect { PassengerTrain.new('grogsf') }
+      .to raise_error('Name has invalid format')
+    # expect { PassengerTrain.new('Boston') }
+    #   .to raise_error('there is such a name')
   end
 
   it 'add carriage' do # edit
@@ -57,7 +66,7 @@ end
 
 describe Train, '#move_methods' do
   before(:context) do
-    @cargo_train = CargoTrain.new('1')
+    @cargo_train = CargoTrain.new('121-rt')
     @first_station = Station.new('Boston')
     @last_station = Station.new('NY')
     @route = Route.new(@first_station, @last_station)

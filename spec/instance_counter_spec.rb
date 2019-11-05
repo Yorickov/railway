@@ -9,8 +9,8 @@ require 'modules/instance_counter'
 
 describe InstanceCounter do
   it 'all in' do
-    CargoTrain.new('1')
-    CargoTrain.new('2')
+    CargoTrain.new('qw1-ww')
+    CargoTrain.new('2wq-33')
     @station1 = Station.new('NY')
     @station2 = Station.new('LA')
     Route.new(@station1, @station2)

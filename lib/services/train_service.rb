@@ -14,7 +14,7 @@ class TrainService < Service
       puts 'there is already such a number'
       create_train
     else
-      puts 'Choose train type (enter index'
+      puts 'Choose train type (enter index)'
 
       type_index = input_index(@train_klass.types.keys)
       type = @train_klass.types.keys[type_index]

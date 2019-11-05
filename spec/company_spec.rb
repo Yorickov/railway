@@ -8,7 +8,7 @@ require 'modules/company'
 
 describe Company do
   it 'Train' do
-    passenger_train = PassengerTrain.new('1')
+    passenger_train = PassengerTrain.new('12322')
     passenger_train.company_name = 'Boogy'
     expect(passenger_train.company_name).to eq('Boogy')
   end
