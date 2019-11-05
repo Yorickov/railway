@@ -67,19 +67,19 @@ end
 describe Train, '#move_methods' do
   before(:context) do
     @cargo_train = CargoTrain.new('121-rt')
-    @first_station = Station.new('Boston')
-    @last_station = Station.new('NY')
+    @first_station = Station.new('Chicago')
+    @last_station = Station.new('SF')
     @route = Route.new(@first_station, @last_station)
   end
 
   it 'add route' do
     @cargo_train.add_route = @route
-    expect(@cargo_train.current_station.name).to eq('Boston')
+    expect(@cargo_train.current_station.name).to eq('Chicago')
   end
 
   it 'to next station' do
     @cargo_train.to_next_station
-    expect(@cargo_train.current_station.name).to eq('NY')
+    expect(@cargo_train.current_station.name).to eq('SF')
   end
 
   it 'to next station' do
@@ -89,7 +89,7 @@ describe Train, '#move_methods' do
 
   it 'to previous station' do
     @cargo_train.to_previous_station
-    expect(@cargo_train.current_station.name).to eq('Boston')
+    expect(@cargo_train.current_station.name).to eq('Chicago')
   end
 
   it 'to previous station' do

@@ -3,7 +3,7 @@ require 'entities/station'
 
 describe Route do
   before(:context) do
-    @first_station = Station.new('Boston')
+    @first_station = Station.new('Detroit')
     @last_station = Station.new('San Antonio')
     @new_station = Station.new('Dallas')
     @route = Route.new(@first_station, @last_station)
@@ -20,7 +20,7 @@ describe Route do
     end
 
     it 'show stations' do
-      expect(@route.show_stations).to eq('Boston - Dallas - San Antonio')
+      expect(@route.show_stations).to eq('Detroit - Dallas - San Antonio')
     end
 
     it 'delete station' do

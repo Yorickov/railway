@@ -84,7 +84,7 @@ class Manager
 
     case choice
     when 'c'
-      @train_service.create_train
+      @train_service.create_train_console
     when 'a'
       @train_service.add_route_to_train
     when 'u'

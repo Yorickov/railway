@@ -7,9 +7,11 @@ class RouteService < Service
   def create_route
     puts 'add first station'
     first_station = choose_station
+    return unless first_station
 
     puts 'add last station'
     last_station = choose_station
+    return unless last_station
 
     route = @route_klass.new(first_station, last_station)
     add_station_console(route)
@@ -26,7 +28,7 @@ class RouteService < Service
     end
 
     route = find_route
-    update_by_type(route)
+    update_by_type(route) if route
   end
 
   private
@@ -35,14 +37,12 @@ class RouteService < Service
 
   def choose_station
     if station_klass.all.size <= 1
-      puts 'there is no stations'
+      puts 'there is not enough stations, create station first'
       return
     end
 
-    puts 'enter index of station or X to exit'
-
-    station_index = input_index(station_klass.stations_list)
-    station_klass.all[station_index]
+    station_index = input_index(station_klass.stations_list, 'station')
+    station_klass.all[station_index] if station_index
   end
 
   def add_station_console(route)
@@ -64,7 +64,7 @@ class RouteService < Service
     route.delete_station(station_to_delete)
   end
 
-  def update_by_type(route)
+  def update_by_type(route) # TODO fix multiply exit
     puts 'enter A to add station, D to delete S to show station or X to exit'
 
     choice = gets.chomp.downcase
@@ -84,11 +84,9 @@ class RouteService < Service
   end
 
   def find_route
-    puts 'Choose route by the index'
-
     str_routes = route_klass.all.map(&:show_stations)
-    route_index = input_index(str_routes)
+    route_index = input_index(str_routes, 'route')
 
-    route_klass.all[route_index]
+    route_klass.all[route_index] if route_index
   end
 end

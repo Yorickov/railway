@@ -5,26 +5,26 @@ class TrainService < Service
     @route_klass = options[:route_klass]
   end
 
-  def create_train
-    puts 'Enter train number'
+  def create_train_console
+    type_index = input_index(@train_klass.types.keys, 'train type')
+    return unless type_index
 
-    train_number = gets.chomp
+    begin
+      puts 'Enter train number or X to exit'
 
-    if train_klass.trains_list.include?(train_number)
-      puts 'there is already such a number'
-      create_train
-    else
-      puts 'Choose train type (enter index)'
+      train_number = gets.chomp
+      return if train_number.downcase == 'x'
 
-      type_index = input_index(@train_klass.types.keys)
-      type = @train_klass.types.keys[type_index]
-      train = @train_klass.types[type].new(train_number)
-
-      puts 'Enter A if you add route to train'
-
-      choice = gets.chomp.downcase
-      add_route_to_train(train) if choice == 'a'
+      train = create_train(train_number, type_index)
+    rescue => e
+      puts e.message
+      retry
     end
+    puts "Created #{train.info}"
+    puts 'Enter A if you add route to train or any key to exit'
+
+    choice = gets.chomp.downcase
+    add_route_to_train(train) if choice == 'a'
   end
 
   def add_route_to_train(train = nil)
@@ -68,26 +68,27 @@ class TrainService < Service
 
   attr_reader :train_klass, :route_klass
 
+  def create_train(number, type_index)
+    type = @train_klass.types.keys[type_index]
+    @train_klass.types[type].new(number)
+  end
+
   def find_route
     return if route_klass.all.empty?
 
-    puts 'Choose route by the index'
-
     str_routes = route_klass.all.map(&:show_stations)
-    route_index = input_index(str_routes)
+    route_index = input_index(str_routes, 'route')
 
-    route_klass.all[route_index]
+    route_klass.all[route_index] if route_index
   end
 
   def find_train
     return if train_klass.all.empty?
 
-    puts 'Choose train by the index'
-
     str_trains = train_klass.all.values.map(&:info)
-    train_index = input_index(str_trains)
+    train_index = input_index(str_trains, 'train')
 
-    train_klass.all.values[train_index]
+    train_klass.all.values[train_index] if train_index
   end
 
   def move_train_process(train)
@@ -127,9 +128,9 @@ class TrainService < Service
   end
 
   def create_carriage
-    puts 'enter carriage type'
+    type_index = input_index(@carriage_klass.types.keys, 'carriage type')
+    return unless type_index
 
-    type_index = input_index(@carriage_klass.types.keys)
     type = @carriage_klass.types.keys[type_index]
     @carriage_klass.types[type].new
   end

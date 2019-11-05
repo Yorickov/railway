@@ -11,7 +11,7 @@ describe InstanceCounter do
   it 'all in' do
     CargoTrain.new('qw1-ww')
     CargoTrain.new('2wq-33')
-    @station1 = Station.new('NY')
+    @station1 = Station.new('Phoenix')
     @station2 = Station.new('LA')
     Route.new(@station1, @station2)
 

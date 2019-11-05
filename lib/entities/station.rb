@@ -63,6 +63,6 @@ class Station
     raise 'You must input smth.' if name.strip.size.zero?
     raise 'Name should not be more than 15 symbols' if name.strip.size > 15
     raise 'Name has invalid format' if name.strip !~ NAME_FORMAT
-    # raise 'there is such a name' if self.class.stations_list.include?(name)
+    raise 'there is such a name' if self.class.stations_list.include?(name)
   end
 end

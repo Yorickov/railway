@@ -4,17 +4,15 @@ class StationService < Service
   end
 
   def create_station_console
-    puts 'enter station name'
+    puts 'enter station name or X to exit'
 
     name = gets.chomp
-    create_station_console if name == ''
+    return if name.downcase == 'x'
 
-    if station_klass.all.any? { |s| s.name == name }
-      puts 'there is already such a station'
-      create_station_console
-    else
-      create_station(name)
-    end
+    create_station(name)
+  rescue => e
+    puts e.message
+    retry
   end
 
   def show_station_trains
@@ -23,14 +21,16 @@ class StationService < Service
       return
     end
 
-    puts 'enter index of station or X to exit' # TODO
-
-    station_index = input_index(station_klass.stations_list)
-    station_klass.all[station_index.to_i].show_trains
+    station_index = input_index(station_klass.stations_list, 'station')
+    station_klass.all[station_index.to_i].show_trains if station_index
   end
 
-  # add search by route?
   def show_stations
+    if station_klass.all.empty?
+      puts 'there is no stations'
+      return
+    end
+
     station_klass.stations_list.each { |name| puts name }
   end
 
@@ -38,8 +38,7 @@ class StationService < Service
 
   attr_reader :station_klass
 
-  def create_station(name)
-    station = @station_klass.new(name)
-    station
+  def create_station(name) # delete
+    @station_klass.new(name)
   end
 end
