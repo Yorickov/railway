@@ -9,7 +9,7 @@ describe 'carriage classes type-checking' do
   end
 
   it 'cargo' do
-    @cargo_carriage = CargoCarriage.new
+    @cargo_carriage = CargoCarriage.new('333')
     expect(@cargo_carriage.type).to eq 'cargo'
   end
 end

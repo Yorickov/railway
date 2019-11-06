@@ -4,7 +4,7 @@ require 'entities/passenger_carriage'
 describe PassengerCarriage do
   it 'validation' do
     expect { PassengerCarriage.new('') }
-      .to raise_error('You must input smth.')
+      .to raise_error('You must input smth. digitally')
     expect { PassengerCarriage.new('666') }
       .to raise_error('Should be from 1 to 100')
   end

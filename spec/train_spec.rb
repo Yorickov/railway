@@ -35,7 +35,7 @@ describe Train, '#carriage_methods' do
   before(:context) do
     @passenger_train = PassengerTrain.new('1aw-23')
     @passenger_carriage = PassengerCarriage.new('33')
-    @cargo_carriage = CargoCarriage.new
+    @cargo_carriage = CargoCarriage.new('33')
   end
 
   it 'validate' do

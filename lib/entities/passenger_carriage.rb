@@ -2,10 +2,10 @@ class PassengerCarriage < Carriage
   attr_reader :seat_count, :seats
 
   def initialize(seat_count)
-    @seat_count = seat_count.strip
+    @seat_count = seat_count.strip.to_i
     validate!
 
-    @seats = Array.new(seat_count.to_i) { false }
+    @seats = Array.new(@seat_count) { false }
   end
 
   def type
@@ -39,7 +39,7 @@ class PassengerCarriage < Carriage
   private
 
   def validate!
-    raise 'You must input smth.' if seat_count.size.zero?
-    raise 'Should be from 1 to 100' unless seat_count.to_i.between?(1, 100)
+    raise 'You must input smth. digitally' if seat_count.zero?
+    raise 'Should be from 1 to 100' unless seat_count.between?(1, 100)
   end
 end
