@@ -57,6 +57,10 @@ class Station
     trains.delete(train)
   end
 
+  def iter_stations
+    trains.each { |t| yield(t) }
+  end
+
   protected
 
   def validate!

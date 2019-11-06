@@ -10,7 +10,7 @@ class Train
   NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
 
   attr_accessor :number
-  attr_reader :speed, :current_station, :route
+  attr_reader :speed, :current_station, :route, :carriages
 
   def self.all
     @@trains
@@ -113,9 +113,11 @@ class Train
     end
   end
 
-  protected
+  def iter_carriages
+    carriages.each { |c| yield(c) }
+  end
 
-  attr_reader :carriages
+  protected
 
   def validate!
     raise 'You must input smth.' if number.strip.size.zero?

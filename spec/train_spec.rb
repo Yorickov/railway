@@ -35,7 +35,9 @@ describe Train, '#carriage_methods' do
   before(:context) do
     @passenger_train = PassengerTrain.new('1aw-23')
     @passenger_carriage = PassengerCarriage.new('33')
-    @cargo_carriage = CargoCarriage.new('33')
+    @cargo_train = CargoTrain.new('123-23')
+    @cargo_carriage1 = CargoCarriage.new('33')
+    @cargo_carriage2 = CargoCarriage.new('31')
   end
 
   it 'validate' do
@@ -53,9 +55,22 @@ describe Train, '#carriage_methods' do
   end
 
   it 'add wrong carriage' do # edit
-    expect { @passenger_train.add_carriage(@cargo_carriage) }
+    expect { @passenger_train.add_carriage(@cargo_carriage1) }
       .to output("wrong carriage\n")
       .to_stdout
+  end
+
+  it 'iter passenger carriages' do
+    @passenger_train.iter_carriages(&:take_seat)
+    expect(@passenger_train.carriages[0].occupied_seats).to eq(1)
+  end
+
+  it 'iter cargo carriages' do
+    @cargo_train.add_carriage(@cargo_carriage1)
+    @cargo_train.add_carriage(@cargo_carriage2)
+
+    @cargo_train.iter_carriages { |c| c.take_volume(2) }
+    expect(@cargo_train.carriages[1].free_volume).to eq(29)
   end
 
   it 'remove carriage' do # edit
