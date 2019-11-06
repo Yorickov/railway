@@ -14,7 +14,7 @@ describe Company do
   end
 
   it 'Company' do
-    passenger_carriage = PassengerCarriage.new
+    passenger_carriage = PassengerCarriage.new('4')
     passenger_carriage.company_name = 'Xeon'
     expect(passenger_carriage.company_name).to eq('Xeon')
   end

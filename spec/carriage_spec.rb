@@ -4,7 +4,7 @@ require 'entities/cargo_carriage'
 
 describe 'carriage classes type-checking' do
   it 'passenger' do
-    @passenger_carriage = PassengerCarriage.new
+    @passenger_carriage = PassengerCarriage.new('5')
     expect(@passenger_carriage.type).to eq 'passenger'
   end
 

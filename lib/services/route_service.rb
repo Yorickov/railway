@@ -36,8 +36,8 @@ class RouteService < Service
   attr_reader :route_klass, :station_klass
 
   def choose_station
-    if station_klass.all.size <= 1
-      puts 'there is not enough stations, create station first'
+    if station_klass.all.empty?
+      puts 'there is no stations, create the one firs'
       return
     end
 
