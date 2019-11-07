@@ -11,9 +11,10 @@ describe CargoCarriage do
 
   it 'methods' do
     @cargo_carriage = CargoCarriage.new('10')
+    @cargo_carriage.number = 2
     @cargo_carriage.take_volume(3)
 
-    expect(@cargo_carriage.free_volume).to eq(7)
-    expect(@cargo_carriage.occupied_volume).to eq(3)
+    expected = 'No 2, type: cargo, volume: free - 7, occupied: 3'
+    expect(@cargo_carriage.info).to eq(expected)
   end
 end

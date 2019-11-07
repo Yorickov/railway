@@ -11,10 +11,10 @@ describe PassengerCarriage do
 
   it 'methods' do
     @passenger_carriage = PassengerCarriage.new('10')
+    @passenger_carriage.number = 3
     @passenger_carriage.take_seat
 
-    expect(@passenger_carriage.free_seats).to eq(9)
-    expect(@passenger_carriage.occupied_seats).to eq(1)
-    expect(@passenger_carriage.seats[0]).to be_truthy
+    expected = 'No 3, type: passenger, seats: free - 9, occupied: 1'
+    expect(@passenger_carriage.info).to eq(expected)
   end
 end

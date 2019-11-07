@@ -110,7 +110,7 @@ class Train
       "carriage amount: #{carriages_count}"
     return str unless @route
 
-    "#{str}\n#{route.first_station.name} - #{route.last_station.name}"
+    "#{str}, #{route.first_station.name} - #{route.last_station.name}"
   end
 
   def show_carriages

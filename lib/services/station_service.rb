@@ -15,7 +15,7 @@ class StationService < Service
     retry
   end
 
-  def show_station_trains
+  def show_station_trains # => to one interface
     station = find_station
     unless station
       puts 'there is no stations'
@@ -25,7 +25,7 @@ class StationService < Service
     station.show_trains
   end
 
-  def show_station_train_carriages
+  def show_train_carriages # => to one interface
     station = find_station
     unless station
       puts 'there is no stations'
@@ -45,6 +45,23 @@ class StationService < Service
     end
 
     station_klass.stations_list.each { |name| puts name }
+  end
+
+  def fill_train_carriages # => to one interface
+    station = find_station
+    unless station
+      puts 'there is no stations'
+      return
+    end
+
+    train_index = input_index(station.trains.map(&:info), 'train')
+    train = station.trains[train_index.to_i] if train_index
+
+    carriage_index = input_index(train.carriages.map(&:info), 'carriage')
+    carriage = train.carriages[carriage_index.to_i] if carriage_index
+
+    carriage.load
+    carriage.info
   end
 
   private

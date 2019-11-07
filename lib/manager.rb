@@ -33,6 +33,8 @@ class Manager
   def station_management
     puts "Enter C to create station,\n" \
     "T to show trains on station,\n" \
+    "I to show train carriage,\n" \
+    "F to fill train carriage,\n" \
     'A to show all stations or X to exit'
 
     choice = gets.chomp.downcase
@@ -45,7 +47,9 @@ class Manager
     when 'a'
       @station_service.show_stations
     when 'i'
-      @station_service.show_station_train_carriages
+      @station_service.show_train_carriages
+    when 'f'
+      @station_service.fill_train_carriages
     when 'x'
       return
     else

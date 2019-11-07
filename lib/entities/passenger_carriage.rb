@@ -12,21 +12,29 @@ class PassengerCarriage < Carriage
     'passenger'
   end
 
-  def free_seats
-    seats.count(false)
+  def load
+    puts 'input seat number, 0 if seat is not important or X to exit'
+
+    seat = gets.chomp
+    return if seat.downcase == 'x'
+
+    # if seat == '0'
+    #   puts 'no space, sorry' unless take_seat
+    #   return
+    # end
+
+    unless seat.to_i
+      puts 'input integer'
+      return
+    end
+
+    arg = seat == '0' ? nil : seat.to_i
+    puts 'no space, sorry' unless take_seat(arg)
   end
 
-  def occupied_seats
-    seats.count(true)
-  end
-
-  def take_seat(num = nil)
+  def take_seat(num = nil) # to private after test edit
     index = num ? seat_free?(num) : seats.index(false)
     seats[index] = true if index
-  end
-
-  def seat_free?(num)
-    seats[num - 1] == true
   end
 
   def info
@@ -46,5 +54,17 @@ class PassengerCarriage < Carriage
   def validate!
     raise 'You must input smth. digitally' if seat_count.zero?
     raise 'Should be from 1 to 100' unless seat_count.between?(1, 100)
+  end
+
+  def seat_free?(num)
+    seats[num - 1] == true
+  end
+
+  def free_seats
+    seats.count(false)
+  end
+
+  def occupied_seats
+    seats.count(true)
   end
 end
