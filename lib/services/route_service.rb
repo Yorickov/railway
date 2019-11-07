@@ -4,7 +4,12 @@ class RouteService < Service
     @station_klass = options[:station_klass]
   end
 
-  def create_route
+  def create_route_console
+    if station_klass.all.empty?
+      puts 'there is no stations to create route'
+      return
+    end
+
     puts 'add first station'
     first_station = choose_station
     return unless first_station
@@ -13,11 +18,16 @@ class RouteService < Service
     last_station = choose_station
     return unless last_station
 
-    route = @route_klass.new(first_station, last_station)
+    route = create_route(first_station, last_station)
     add_station_console(route)
   end
 
   def show_routes
+    if route_klass.all.empty?
+      puts 'there is no routes'
+      return
+    end
+
     route_klass.all.each { |r| puts r.show_stations }
   end
 
@@ -94,5 +104,9 @@ class RouteService < Service
     route_index = input_index(str_routes, 'route')
 
     route_klass.all[route_index] if route_index
+  end
+
+  def create_route(first_station, last_station)
+    @route_klass.new(first_station, last_station)
   end
 end

@@ -30,6 +30,7 @@ class PassengerCarriage < Carriage
 
     arg = seat == '0' ? nil : seat.to_i
     puts 'no space, sorry' unless take_seat(arg)
+    puts "Process successfully finished, #{info}"
   end
 
   def take_seat(num = nil) # to private after test edit

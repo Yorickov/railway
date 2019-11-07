@@ -32,24 +32,18 @@ class Manager
 
   def station_management
     puts "Enter C to create station,\n" \
-    "T to show trains on station,\n" \
-    "I to show train carriage,\n" \
-    "F to fill train carriage,\n" \
-    'A to show all stations or X to exit'
+    "S to show all stations,\n" \
+    "M to manage station train or X to exit'\n"
 
     choice = gets.chomp.downcase
 
     case choice
     when 'c'
       @station_service.create_station_console
-    when 't'
-      @station_service.show_station_trains
-    when 'a'
+    when 's'
       @station_service.show_stations
-    when 'i'
-      @station_service.show_train_carriages
-    when 'f'
-      @station_service.fill_train_carriages
+    when 'm'
+      @station_service.manage_station
     when 'x'
       return
     else
@@ -67,7 +61,7 @@ class Manager
 
     case choice
     when 'c'
-      @route_service.create_route
+      @route_service.create_route_console
     when 'u'
       @route_service.update_route
     when 'r'

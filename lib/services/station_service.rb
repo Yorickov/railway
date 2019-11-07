@@ -15,29 +15,6 @@ class StationService < Service
     retry
   end
 
-  def show_station_trains # => to one interface
-    station = find_station
-    unless station
-      puts 'there is no stations'
-      return
-    end
-
-    station.show_trains
-  end
-
-  def show_train_carriages # => to one interface
-    station = find_station
-    unless station
-      puts 'there is no stations'
-      return
-    end
-
-    train_index = input_index(station.trains.map(&:info), 'train')
-    train = station.trains[train_index.to_i] if train_index
-
-    train.show_carriages
-  end
-
   def show_stations
     if station_klass.all.empty?
       puts 'there is no stations'
@@ -47,21 +24,62 @@ class StationService < Service
     station_klass.stations_list.each { |name| puts name }
   end
 
-  def fill_train_carriages # => to one interface
-    station = find_station
-    unless station
-      puts 'there is no stations'
+  def manage_station
+    if station_klass.all.empty?
+      puts 'there is no routes'
       return
     end
 
+    station = find_station
+    if station.trains.empty?
+      puts 'there is no trains'
+      return
+    end
+
+    manage_station_process(station)
+  end
+
+  def manage_station_process(station)
+    puts 'enter T to show station trains, C to show carriage, ' \
+    'F to fill carriage or X to exit'
+
+    choice = gets.chomp.downcase
+    return if choice == 'x'
+
+    case choice
+    when 't'
+      show_station_trains(station)
+    when 'c'
+      manage_train_carriages(station, true)
+    when 'f'
+      manage_train_carriages(station, false)
+    else
+      manage_station_process(station)
+    end
+    manage_station_process(station)
+  end
+
+  def show_station_trains(station)
+    station.show_trains
+  end
+
+  def manage_train_carriages(station, flag)
     train_index = input_index(station.trains.map(&:info), 'train')
     train = station.trains[train_index.to_i] if train_index
 
-    carriage_index = input_index(train.carriages.map(&:info), 'carriage')
-    carriage = train.carriages[carriage_index.to_i] if carriage_index
+    if train.carriages_count.zero?
+      puts 'there is no carriages'
+      return
+    end
 
-    carriage.load
-    carriage.info
+    if flag
+      train.show_carriages
+    else
+      carriage_index = input_index(train.carriages.map(&:info), 'carriage')
+      carriage = train.carriages[carriage_index.to_i] if carriage_index
+      carriage.load
+      carriage.info
+    end
   end
 
   private
@@ -69,8 +87,6 @@ class StationService < Service
   attr_reader :station_klass
 
   def find_station
-    return if station_klass.all.empty?
-
     station_index = input_index(station_klass.stations_list, 'station')
     station_klass.all[station_index.to_i] if station_index
   end
