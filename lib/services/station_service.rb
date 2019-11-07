@@ -63,7 +63,7 @@ class StationService < Service
     station.show_trains
   end
 
-  def manage_train_carriages(station, flag)
+  def manage_train_carriages(station, flag) # 2 functions
     train_index = input_index(station.trains.map(&:info), 'train')
     train = station.trains[train_index.to_i] if train_index
 

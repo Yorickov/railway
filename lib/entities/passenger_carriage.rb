@@ -34,8 +34,7 @@ class PassengerCarriage < Carriage
   end
 
   def take_seat(num = nil) # to private after test edit
-    index = num && seat_free?(num) ? (num - 1) : seats.index(false)
-    p index
+    index = num ? seat_free?(num) && (num - 1) : seats.index(false)
     seats[index] = true if index
   end
 
