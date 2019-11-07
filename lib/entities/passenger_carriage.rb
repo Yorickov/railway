@@ -13,28 +13,29 @@ class PassengerCarriage < Carriage
   end
 
   def load
-    puts 'input seat number, 0 if seat is not important or X to exit'
+    puts 'input seat number (integer), A to take any place or X to exit'
 
     seat = gets.chomp
     return if seat.downcase == 'x'
 
-    # if seat == '0'
-    #   puts 'no space, sorry' unless take_seat
-    #   return
-    # end
-
-    unless seat.to_i
-      puts 'input integer'
+    if seat.to_i.zero? && seat.downcase != 'a'
+      puts 'input integer > 0 or A'
       return
     end
 
-    arg = seat == '0' ? nil : seat.to_i
-    puts 'no space, sorry' unless take_seat(arg)
+    arg = seat.downcase == 'a' ? nil : seat.to_i
+
+    unless take_seat(arg)
+      puts 'no space, sorry'
+      return
+    end
+
     puts "Process successfully finished, #{info}"
   end
 
   def take_seat(num = nil) # to private after test edit
-    index = num ? seat_free?(num) : seats.index(false)
+    index = num && seat_free?(num) ? (num - 1) : seats.index(false)
+    p index
     seats[index] = true if index
   end
 
@@ -58,7 +59,7 @@ class PassengerCarriage < Carriage
   end
 
   def seat_free?(num)
-    seats[num - 1] == true
+    seats[num - 1] == false
   end
 
   def free_seats

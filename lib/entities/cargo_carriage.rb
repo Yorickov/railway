@@ -18,12 +18,16 @@ class CargoCarriage < Carriage
     amount = gets.chomp
     return if amount.downcase == 'x'
 
-    unless amount.to_i
-      puts 'input integer'
+    if amount.to_i.zero?
+      puts 'input integer > 0'
       return
     end
 
-    puts 'no space, sorry' unless take_volume(amount.to_i)
+    unless take_volume(amount.to_i)
+      puts 'no space, sorry'
+      return
+    end
+
     puts "Process successfully finished, #{info}"
   end
 
