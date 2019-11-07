@@ -16,13 +16,26 @@ class StationService < Service
   end
 
   def show_station_trains
-    if station_klass.all.empty?
+    station = find_station
+    unless station
       puts 'there is no stations'
       return
     end
 
-    station_index = input_index(station_klass.stations_list, 'station')
-    station_klass.all[station_index.to_i].show_trains if station_index
+    station.show_trains
+  end
+
+  def show_station_train_carriages
+    station = find_station
+    unless station
+      puts 'there is no stations'
+      return
+    end
+
+    train_index = input_index(station.trains.map(&:info), 'train')
+    train = station.trains[train_index.to_i] if train_index
+
+    train.show_carriages
   end
 
   def show_stations
@@ -37,6 +50,13 @@ class StationService < Service
   private
 
   attr_reader :station_klass
+
+  def find_station
+    return if station_klass.all.empty?
+
+    station_index = input_index(station_klass.stations_list, 'station')
+    station_klass.all[station_index.to_i] if station_index
+  end
 
   def create_station(name)
     @station_klass.new(name)

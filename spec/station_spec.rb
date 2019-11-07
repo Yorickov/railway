@@ -42,19 +42,21 @@ describe Station do
   end
 
   it 'show trains' do
-    str = "Train No fre-tr, type: passenger, Boston - NY\n" \
-    "Train No ub2-tr, type: cargo, Boston - NY\n"
+    str = "Train No fre-tr, type: passenger, carriage amount: 0\nBoston - NY\n" \
+    "Train No ub2-tr, type: cargo, carriage amount: 0\nBoston - NY\n"
     expect { @station.show_trains }.to output(str).to_stdout
   end
 
   it 'show passenger trains' do
     expect { @station.show_trains_by_type('passenger') }
-      .to output("Train No fre-tr, type: passenger, Boston - NY\n").to_stdout
+      .to output("Train No fre-tr, type: passenger, carriage amount: 0\nBoston - NY\n")
+      .to_stdout
   end
 
   it 'show cargo trains' do
     expect { @station.show_trains_by_type('cargo') }
-      .to output("Train No ub2-tr, type: cargo, Boston - NY\n").to_stdout
+      .to output("Train No ub2-tr, type: cargo, carriage amount: 0\nBoston - NY\n")
+      .to_stdout
   end
 
   it 'send train' do

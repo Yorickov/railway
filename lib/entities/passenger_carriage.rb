@@ -29,6 +29,11 @@ class PassengerCarriage < Carriage
     seats[num - 1] == true
   end
 
+  def info
+    "No #{number}, type: #{type}, " \
+    "seats: free - #{free_seats}, occupied: #{occupied_seats}"
+  end
+
   def valid?
     validate!
     true

@@ -43,8 +43,12 @@ class Station
     @trains << train
   end
 
+  # def show_trains
+  #   trains.each { |t| puts t.info }
+  # end
+
   def show_trains
-    trains.each { |t| puts t.info }
+    iter_trains { |t| puts t.info }
   end
 
   def show_trains_by_type(type)
@@ -57,11 +61,11 @@ class Station
     trains.delete(train)
   end
 
-  def iter_stations
+  protected
+
+  def iter_trains
     trains.each { |t| yield(t) }
   end
-
-  protected
 
   def validate!
     raise 'You must input smth.' if name.strip.size.zero?

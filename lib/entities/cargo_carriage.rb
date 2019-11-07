@@ -22,6 +22,11 @@ class CargoCarriage < Carriage
     @max_volume - @occupied_volume
   end
 
+  def info
+    "No #{number}, type: #{type}, " \
+    "volume: free - #{free_volume}, occupied: #{occupied_volume}"
+  end
+
   def valid?
     validate!
     true

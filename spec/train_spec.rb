@@ -36,8 +36,7 @@ describe Train, '#carriage_methods' do
     @passenger_train = PassengerTrain.new('1aw-23')
     @passenger_carriage = PassengerCarriage.new('33')
     @cargo_train = CargoTrain.new('123-23')
-    @cargo_carriage1 = CargoCarriage.new('33')
-    @cargo_carriage2 = CargoCarriage.new('31')
+    @cargo_carriage1 = CargoCarriage.new('30')
   end
 
   it 'validate' do
@@ -45,8 +44,8 @@ describe Train, '#carriage_methods' do
       .to raise_error('You must input smth.')
     expect { PassengerTrain.new('grogsf') }
       .to raise_error('Name has invalid format')
-    # expect { PassengerTrain.new('Boston') }
-    #   .to raise_error('there is such a name')
+    expect { PassengerTrain.new('1aw-23') }
+      .to raise_error('there is such a number')
   end
 
   it 'add carriage' do # edit
@@ -60,17 +59,17 @@ describe Train, '#carriage_methods' do
       .to_stdout
   end
 
-  it 'iter passenger carriages' do
-    @passenger_train.iter_carriages(&:take_seat)
-    expect(@passenger_train.carriages[0].occupied_seats).to eq(1)
+  it 'show passenger carriages' do
+    expect { @passenger_train.show_carriages }
+      .to output("No 1, type: passenger, seats: free - 33, occupied: 0\n")
+      .to_stdout
   end
 
-  it 'iter cargo carriages' do
+  it 'show cargo carriages' do
     @cargo_train.add_carriage(@cargo_carriage1)
-    @cargo_train.add_carriage(@cargo_carriage2)
-
-    @cargo_train.iter_carriages { |c| c.take_volume(2) }
-    expect(@cargo_train.carriages[1].free_volume).to eq(29)
+    expect { @cargo_train.show_carriages }
+      .to output("No 1, type: cargo, volume: free - 30, occupied: 0\n")
+      .to_stdout
   end
 
   it 'remove carriage' do # edit

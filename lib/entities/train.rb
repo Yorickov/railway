@@ -64,6 +64,7 @@ class Train
     elsif !valid_carriage?(carriage)
       puts 'wrong carriage'
     else
+      carriage.number = carriages_count + 1
       @carriages << carriage
     end
   end
@@ -105,19 +106,22 @@ class Train
   end
 
   def info
-    if @route
-      "Train No #{number}, type: #{type}, " \
-      "#{route.first_station.name} - #{route.last_station.name}"
-    else
-      "Train No #{number}, type: #{type}"
-    end
+    str = "Train No #{number}, type: #{type}, " \
+      "carriage amount: #{carriages_count}"
+    return str unless @route
+
+    "#{str}\n#{route.first_station.name} - #{route.last_station.name}"
   end
+
+  def show_carriages
+    iter_carriages { |c| puts c.info }
+  end
+
+  protected
 
   def iter_carriages
     carriages.each { |c| yield(c) }
   end
-
-  protected
 
   def validate!
     raise 'You must input smth.' if number.strip.size.zero?

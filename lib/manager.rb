@@ -44,6 +44,8 @@ class Manager
       @station_service.show_station_trains
     when 'a'
       @station_service.show_stations
+    when 'i'
+      @station_service.show_station_train_carriages
     when 'x'
       return
     else
