@@ -26,11 +26,11 @@ describe Station do
 
   it 'validate' do
     expect { Station.new('') }
-      .to raise_error('You must input smth.')
+      .to raise_error(RuntimeError, 'You must input smth.')
     expect { Station.new('tr_rtt') }
-      .to raise_error('Name has invalid format')
-    # expect { Station.new('Boston') }
-    #   .to raise_error('there is such a name')
+      .to raise_error(RuntimeError, 'Name has invalid format')
+    expect { Station.new('Boston') }
+      .to raise_error(RuntimeError, 'there is such a name')
   end
 
   it 'all stations' do

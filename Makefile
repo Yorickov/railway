@@ -1,4 +1,4 @@
-make install:
+install:
 	bundle install
 
 start:

@@ -16,6 +16,12 @@ Metrics/BlockLength:
   Exclude:
     - spec/**/*
 
+Style/ClassVars:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
 # standart: 10
 Metrics/MethodLength:
   Max: 20
