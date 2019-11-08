@@ -1,8 +1,21 @@
+AllCops:
+  Exclude:
+    - bin/**/*
+    - tmp/**/*
+    - vendor/**/*
+    - spec/spec_helper.rb
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 
 Style/Documentation:
   Enabled: false
 
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - spec/**/*
+
+# standart: 10
 Metrics/MethodLength:
   Max: 20
