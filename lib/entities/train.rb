@@ -114,12 +114,12 @@ class Train
   end
 
   def show_carriages
-    iter_carriages { |c| puts c.info }
+    each_carriage { |c| puts c.info }
   end
 
   protected
 
-  def iter_carriages
+  def each_carriage
     carriages.each { |c| yield(c) }
   end
 

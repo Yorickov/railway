@@ -43,12 +43,8 @@ class Station
     @trains << train
   end
 
-  # def show_trains
-  #   trains.each { |t| puts t.info }
-  # end
-
   def show_trains
-    iter_trains { |t| puts t.info }
+    each_train { |t| puts t.info }
   end
 
   def show_trains_by_type(type)
@@ -63,7 +59,7 @@ class Station
 
   protected
 
-  def iter_trains
+  def each_train
     trains.each { |t| yield(t) }
   end
 
