@@ -31,7 +31,8 @@ class CargoCarriage < Carriage
     puts "Process successfully finished, #{info}"
   end
 
-  def take_volume(amount) # to private after test edit
+  # to private after test edit
+  def take_volume(amount)
     return unless volume_free?(amount)
 
     @occupied_volume += amount
@@ -45,7 +46,7 @@ class CargoCarriage < Carriage
   def valid?
     validate!
     true
-  rescue
+  rescue RuntimeError
     false
   end
 

@@ -33,7 +33,8 @@ class PassengerCarriage < Carriage
     puts "Process successfully finished, #{info}"
   end
 
-  def take_seat(num = nil) # to private after test edit
+  # to private after test edit
+  def take_seat(num = nil)
     index = num ? seat_free?(num) && (num - 1) : seats.index(false)
     seats[index] = true if index
   end
@@ -46,7 +47,7 @@ class PassengerCarriage < Carriage
   def valid?
     validate!
     true
-  rescue
+  rescue RuntimeError
     false
   end
 
