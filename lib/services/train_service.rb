@@ -1,10 +1,4 @@
 class TrainService < Service
-  def initialize(options)
-    @train_klass = options[:train_klass]
-    @carriage_klass = options[:carriage_klass]
-    @route_klass = options[:route_klass]
-  end
-
   def create_train_console
     type_index = input_index(@train_klass.types.keys, 'train type')
     return unless type_index
@@ -16,12 +10,11 @@ class TrainService < Service
       return if train_number.downcase == 'x'
 
       train = create_train(train_number, type_index)
-    rescue => e
+    rescue RuntimeError => e
       puts e.message
       retry
     end
-    puts "Created #{train.info}"
-    puts 'Enter A if you add route to train or any key to exit'
+    puts "Created #{train.info}\nEnter A to add route or any key to exit"
 
     choice = gets.chomp.downcase
     add_route_to_train(train) if choice == 'a'
@@ -30,13 +23,13 @@ class TrainService < Service
   def add_route_to_train(train = nil)
     route = find_route
     unless route
-      puts 'there is no routes'
+      puts 'there is no such a route'
       return
     end
 
     train ||= find_train
     unless train
-      puts 'there is no trains'
+      puts 'there is no such a train'
       return
     end
 
@@ -47,7 +40,7 @@ class TrainService < Service
   def move_train
     train = find_train
     unless train
-      puts 'there is no trains'
+      puts 'there is no such a train'
       return
     end
 
@@ -57,30 +50,11 @@ class TrainService < Service
   def manage_carriages
     train = find_train
     unless train
-      puts 'there is no trains'
+      puts 'there is no such a train'
       return
     end
 
     manage_carriages_process(train)
-  end
-
-  def create_carriage_console
-    type_index = input_index(@carriage_klass.types.keys, 'carriage type')
-    return unless type_index
-
-    type = @carriage_klass.types.keys[type_index]
-
-    begin
-      puts 'input capacity or X to exit'
-
-      capacity = gets.chomp
-      return if capacity.downcase == 'x'
-
-      create_carriage(type, capacity)
-    rescue => e
-      puts e.message
-      retry
-    end
   end
 
   private
@@ -99,15 +73,6 @@ class TrainService < Service
     route_index = input_index(str_routes, 'route')
 
     route_klass.all[route_index] if route_index
-  end
-
-  def find_train
-    return if train_klass.all.empty?
-
-    str_trains = train_klass.all.values.map(&:info)
-    train_index = input_index(str_trains, 'train')
-
-    train_klass.all.values[train_index] if train_index
   end
 
   def move_train_process(train)
@@ -144,6 +109,25 @@ class TrainService < Service
       manage_carriages_process(train)
     end
     manage_carriages_process(train)
+  end
+
+  def create_carriage_console
+    type_index = input_index(@carriage_klass.types.keys, 'carriage type')
+    return unless type_index
+
+    type = @carriage_klass.types.keys[type_index]
+
+    begin
+      puts 'input capacity or X to exit'
+
+      capacity = gets.chomp
+      return if capacity.downcase == 'x'
+
+      create_carriage(type, capacity)
+    rescue RuntimeError => e
+      puts e.message
+      retry
+    end
   end
 
   def create_carriage(type, capacity)

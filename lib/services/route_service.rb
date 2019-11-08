@@ -1,9 +1,4 @@
 class RouteService < Service
-  def initialize(options)
-    @route_klass = options[:route_klass]
-    @station_klass = options[:station_klass]
-  end
-
   def create_route_console
     if station_klass.all.empty?
       puts 'there is no stations to create route'
@@ -32,13 +27,13 @@ class RouteService < Service
   end
 
   def update_route
-    if route_klass.all.empty?
-      puts 'there is no routes'
+    route = find_route
+    unless route
+      puts 'there is no such a route'
       return
     end
 
-    route = find_route
-    update_by_type(route) if route
+    update_by_type(route)
   end
 
   private
@@ -73,18 +68,10 @@ class RouteService < Service
     station_klass.all[station_index] if station_index
   end
 
-  def find_route
-    str_routes = route_klass.all.map(&:show_stations)
-    route_index = input_index(str_routes, 'route')
-
-    route_klass.all[route_index] if route_index
-  end
-
   def update_by_type(route)
     puts 'enter A to add station, D to delete S to show route or X to exit'
 
     choice = gets.chomp.downcase
-    return if choice == 'x'
 
     case choice
     when 'a'
@@ -93,6 +80,8 @@ class RouteService < Service
       delete_station_console(route)
     when 's'
       puts route.show_stations
+    when 'x'
+      return
     else
       update_by_type(route)
     end

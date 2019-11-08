@@ -22,6 +22,10 @@ Style/ClassVars:
 Metrics/AbcSize:
   Enabled: false
 
+# standart: 100
+Metrics/ClassLength:
+  Max: 110
+
 # standart: 10
 Metrics/MethodLength:
   Max: 20

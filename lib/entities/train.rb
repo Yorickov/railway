@@ -42,7 +42,7 @@ class Train
   def valid?
     validate!
     true
-  rescue
+  rescue RuntimeError
     false
   end
 
@@ -106,8 +106,7 @@ class Train
   end
 
   def info
-    str = "Train No #{number}, type: #{type}, " \
-      "carriage amount: #{carriages_count}"
+    str = "Train No #{number}, type: #{type}, carriages: #{carriages_count}"
     return str unless @route
 
     "#{str}, #{route.first_station.name} - #{route.last_station.name}"

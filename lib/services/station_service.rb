@@ -1,8 +1,4 @@
 class StationService < Service
-  def initialize(options)
-    @station_klass = options[:station_klass]
-  end
-
   def create_station_console
     puts 'enter station name or X to exit'
 
@@ -25,14 +21,9 @@ class StationService < Service
   end
 
   def manage_station
-    if station_klass.all.empty?
-      puts 'there is no routes'
-      return
-    end
-
     station = find_station
-    if station.trains.empty?
-      puts 'there is no trains'
+    unless station
+      puts 'there is no such a station'
       return
     end
 
@@ -45,11 +36,6 @@ class StationService < Service
 
   def create_station(name)
     @station_klass.new(name)
-  end
-
-  def find_station
-    station_index = input_index(station_klass.stations_list, 'station')
-    station_klass.all[station_index.to_i] if station_index
   end
 
   def manage_station_process(station)
