@@ -45,14 +45,8 @@ class RouteService < Service
 
   attr_reader :route_klass, :station_klass
 
-  def choose_station
-    if station_klass.all.empty?
-      puts 'there is no stations, create the one firs'
-      return
-    end
-
-    station_index = input_index(station_klass.stations_list, 'station')
-    station_klass.all[station_index] if station_index
+  def create_route(first_station, last_station)
+    @route_klass.new(first_station, last_station)
   end
 
   def add_station_console(route)
@@ -69,15 +63,21 @@ class RouteService < Service
     add_station_console(route)
   end
 
-  def delete_station_console(route)
-    puts "enter station to delete:\n#{route.show_stations}"
-    choice = gets.chomp.downcase
+  def choose_station
+    if station_klass.all.empty?
+      puts 'there is no stations, create the one firs'
+      return
+    end
 
-    delete_station_console(route) unless route.stations.any? { |s| s.name == choice }
-    station_to_delete = station_klass.find(choice)
+    station_index = input_index(station_klass.stations_list, 'station')
+    station_klass.all[station_index] if station_index
+  end
 
-    deleted_station = route.delete_station(station_to_delete)
-    puts 'station can not be removed' unless deleted_station
+  def find_route
+    str_routes = route_klass.all.map(&:show_stations)
+    route_index = input_index(str_routes, 'route')
+
+    route_klass.all[route_index] if route_index
   end
 
   def update_by_type(route)
@@ -99,14 +99,17 @@ class RouteService < Service
     update_by_type(route)
   end
 
-  def find_route
-    str_routes = route_klass.all.map(&:show_stations)
-    route_index = input_index(str_routes, 'route')
+  def delete_station_console(route)
+    puts "enter station to delete:\n#{route.show_stations}"
+    choice = gets.chomp.downcase
 
-    route_klass.all[route_index] if route_index
-  end
+    unless route.stations.any? { |s| s.name == choice }
+      delete_station_console(route)
+    end
 
-  def create_route(first_station, last_station)
-    @route_klass.new(first_station, last_station)
+    station_to_delete = station_klass.find(choice)
+
+    deleted_station = route.delete_station(station_to_delete)
+    puts 'station can not be removed' unless deleted_station
   end
 end
