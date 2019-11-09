@@ -28,15 +28,23 @@ module Validation
     def validate!
       self.class.constrains.each do |name, items|
         items.each do |c|
+          attr = instance_variable_get("@#{name}")
           method = c[:type].to_s
-          send(method, name, c[:opt])
+          send(method, attr, c[:opt])
         end
       end
     end
 
-    def presence(name, _opt)
-      attr = instance_variable_get("@#{name}")
+    def presence(attr, _opt)
       raise ArgumentError, 'You must input smth.' if attr.strip.size.zero?
+    end
+
+    def format(attr, opt)
+      raise ArgumentError, 'Invalid format' if attr.strip !~ opt[0]
+    end
+
+    def type(attr, opt)
+      raise TypeError, 'wrong type' unless attr.is_a?(opt[0])
     end
   end
 end
