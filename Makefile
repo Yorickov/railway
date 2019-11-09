@@ -6,6 +6,3 @@ start:
 
 test:
 	bin/rspec
-
-lint:
-	bundle exec rubocop
