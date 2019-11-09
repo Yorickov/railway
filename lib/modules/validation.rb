@@ -10,7 +10,8 @@ module Validation
     def validate(*args)
       @constrains ||= {}
       name, type, *opt = args
-      @constrains[name] = { type: type, opt: opt }
+      @constrains[name] ||= []
+      @constrains[name] << { type: type, opt: opt }
     end
   end
 
@@ -25,9 +26,11 @@ module Validation
     protected
 
     def validate!
-      self.class.constrains.each do |name, params|
-        method = params[:type].to_s
-        send(method, name, params[:opt])
+      self.class.constrains.each do |name, items|
+        items.each do |c|
+          method = c[:type].to_s
+          send(method, name, c[:opt])
+        end
       end
     end
 
