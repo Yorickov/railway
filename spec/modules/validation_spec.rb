@@ -5,9 +5,15 @@ describe Validation do
     class User
       include Validation
 
+      @@users = ['Dan']
+
       validate :name, :presence
       validate :name, :format, /^[a-z0-9\- ]+$/i
       validate :base, :type, Symbol
+
+      def self.all
+        @@users
+      end
 
       def initialize(name, base)
         @name = name

@@ -41,11 +41,11 @@ describe Train, '#carriage_methods' do
 
   it 'validate' do
     expect { PassengerTrain.new('') }
-      .to raise_error(RuntimeError, 'You must input smth.')
+      .to raise_error(ArgumentError, 'You must input smth.')
     expect { PassengerTrain.new('grogsf') }
-      .to raise_error(RuntimeError, 'Name has invalid format')
+      .to raise_error(ArgumentError, 'Invalid format')
     expect { PassengerTrain.new('1aw-23') }
-      .to raise_error(RuntimeError, 'there is such a number')
+      .to raise_error(ArgumentError, 'there is already 1aw-23')
   end
 
   it 'add carriage' do # edit

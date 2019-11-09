@@ -3,10 +3,8 @@ require 'entities/passenger_carriage'
 
 describe PassengerCarriage do
   it 'validation' do
-    expect { PassengerCarriage.new('') }
-      .to raise_error('You must input smth. digitally')
-    expect { PassengerCarriage.new('666') }
-      .to raise_error('Should be from 1 to 100')
+    expect { PassengerCarriage.new('0') }
+      .to raise_error('Invalid format')
   end
 
   it 'methods' do

@@ -27,6 +27,10 @@ describe Route do
       @route.delete_station(@new_station)
       expect(@route.stations).not_to include(@new_station)
     end
+
+    it 'validate' do
+      expect(@route.valid?).to be_truthy
+    end
   end
 
   context 'wrong' do

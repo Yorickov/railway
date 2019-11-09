@@ -1,7 +1,11 @@
 require_relative '../modules/instance_counter'
+require_relative '../modules/accessors'
+require_relative '../modules/validation'
 
 class Route
   include InstanceCounter
+  include Accessors
+  include Validation
 
   @@routes = []
 
@@ -11,19 +15,14 @@ class Route
 
   attr_reader :stations
 
+  validate :stations, :type, Array
+
   def initialize(first_station, last_station)
     @stations = [first_station, last_station]
     validate!
     @@routes << self
 
     register_instance
-  end
-
-  def valid?
-    validate!
-    true
-  rescue RuntimeError
-    false
   end
 
   def first_station
@@ -55,12 +54,4 @@ class Route
   def stations_list
     stations.map(&:name)
   end
-
-  def validate!
-    raise 'wrong station class' unless @stations.all? { |s| s.class == Station }
-  end
-
-  # def to_hash
-  #   stations.each_with_object({}) { |item, acc| acc[item.name] = item }
-  # end
 end

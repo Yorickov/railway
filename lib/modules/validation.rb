@@ -35,6 +35,8 @@ module Validation
       end
     end
 
+    private
+
     def presence(attr, _opt)
       raise ArgumentError, 'You must input smth.' if attr.strip.size.zero?
     end
@@ -45,6 +47,15 @@ module Validation
 
     def type(attr, opt)
       raise TypeError, 'wrong type' unless attr.is_a?(opt[0])
+    end
+
+    def uniqueness(attr, opt)
+      storage = opt[0].all
+      if storage.is_a?(Array) && storage.any? { |i| i.name == attr }
+        raise ArgumentError, "there is already #{attr}"
+      elsif storage.is_a?(Hash) && storage.keys.include?(attr)
+        raise ArgumentError, "there is already #{attr}"
+      end
     end
   end
 end

@@ -1,7 +1,11 @@
 require_relative '../modules/instance_counter'
+require_relative '../modules/accessors'
+require_relative '../modules/validation'
 
 class Station
   include InstanceCounter
+  include Accessors
+  include Validation
 
   @@stations = []
 
@@ -9,6 +13,10 @@ class Station
 
   attr_accessor :name
   attr_reader :trains
+
+  validate :name, :presence
+  validate :name, :format, NAME_FORMAT
+  validate :name, :uniqueness, self
 
   def self.all
     @@stations
@@ -30,13 +38,6 @@ class Station
     @@stations << self
 
     register_instance
-  end
-
-  def valid?
-    validate!
-    true
-  rescue RuntimeError
-    false
   end
 
   def add_train(train)
@@ -61,12 +62,5 @@ class Station
 
   def each_train
     trains.each { |t| yield(t) }
-  end
-
-  def validate!
-    raise 'You must input smth.' if name.strip.size.zero?
-    raise 'Name should not be more than 15 symbols' if name.strip.size > 15
-    raise 'Name has invalid format' if name.strip !~ NAME_FORMAT
-    raise 'there is such a name' if self.class.stations_list.include?(name)
   end
 end

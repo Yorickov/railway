@@ -1,16 +1,24 @@
 require_relative '../modules/company'
 require_relative '../modules/instance_counter'
+require_relative '../modules/accessors'
+# require_relative '../modules/validation'
 
 class Train
   include Company
   include InstanceCounter
+  include Accessors
+  # include Validation
 
   @@trains = {}
 
-  NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
+  # NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
 
   attr_accessor :number
   attr_reader :speed, :current_station, :route, :carriages
+
+  # validate :number, :presence
+  # validate :number, :format, NUMBER_FORMAT
+  # validate :number, :uniqueness, self
 
   def self.all
     @@trains
@@ -37,13 +45,6 @@ class Train
     @@trains[number] = self
 
     register_instance
-  end
-
-  def valid?
-    validate!
-    true
-  rescue RuntimeError
-    false
   end
 
   def speed_up(step = 1)
@@ -120,12 +121,6 @@ class Train
 
   def each_carriage
     carriages.each { |c| yield(c) }
-  end
-
-  def validate!
-    raise 'You must input smth.' if number.strip.size.zero?
-    raise 'Name has invalid format' if number.strip !~ NUMBER_FORMAT
-    raise 'there is such a number' if self.class.trains_list.include?(number)
   end
 
   def next_station

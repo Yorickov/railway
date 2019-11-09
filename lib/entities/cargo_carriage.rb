@@ -1,8 +1,16 @@
+require_relative '../modules/validation'
+
 class CargoCarriage < Carriage
+  include Validation
+
+  VOLUME_FORMAT = /^[1-9]{1}[0-9]*$/i.freeze
+
   attr_reader :max_volume
 
+  validate :max_volume, :format, VOLUME_FORMAT
+
   def initialize(max_volume)
-    @max_volume = max_volume.strip.to_i
+    @max_volume = max_volume
 
     validate!
     @occupied_volume = 0
@@ -43,24 +51,12 @@ class CargoCarriage < Carriage
     "volume: free - #{free_volume}, occupied: #{occupied_volume}"
   end
 
-  def valid?
-    validate!
-    true
-  rescue RuntimeError
-    false
-  end
-
   private
 
   attr_reader :occupied_volume
 
-  def validate!
-    raise 'You must input smth.' if max_volume.zero?
-    raise 'Should be from 1 to 1000' unless max_volume.between?(1, 1000)
-  end
-
   def free_volume
-    @max_volume - @occupied_volume
+    @max_volume.to_i - @occupied_volume
   end
 
   def volume_free?(amount)

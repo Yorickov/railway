@@ -1,11 +1,19 @@
+require_relative '../modules/validation'
+
 class PassengerCarriage < Carriage
+  include Validation
+
+  SEAT_COUNT_FORMAT = /^[1-9]{1}[0-9]*$/i.freeze
+
   attr_reader :seat_count, :seats
 
+  validate :seat_count, :format, SEAT_COUNT_FORMAT
+
   def initialize(seat_count)
-    @seat_count = seat_count.strip.to_i
+    @seat_count = seat_count
     validate!
 
-    @seats = Array.new(@seat_count) { false }
+    @seats = Array.new(@seat_count.to_i) { false }
   end
 
   def type
@@ -44,19 +52,7 @@ class PassengerCarriage < Carriage
     "seats: free - #{free_seats}, occupied: #{occupied_seats}"
   end
 
-  def valid?
-    validate!
-    true
-  rescue RuntimeError
-    false
-  end
-
   private
-
-  def validate!
-    raise 'You must input smth. digitally' if seat_count.zero?
-    raise 'Should be from 1 to 100' unless seat_count.between?(1, 100)
-  end
 
   def seat_free?(num)
     seats[num - 1] == false
