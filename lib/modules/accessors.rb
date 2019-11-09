@@ -13,9 +13,7 @@ module Accessors
         instance_variable_set(var_name, value)
       end
 
-      define_method("#{name}_history") do
-        @all_attrs[name]
-      end
+      define_method("#{name}_history") { @all_attrs[name] }
     end
   end
 
