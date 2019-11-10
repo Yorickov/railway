@@ -29,7 +29,7 @@ module Validation
       self.class.constrains.each do |name, items|
         items.each do |c|
           attr = instance_variable_get("@#{name}")
-          method = c[:type].to_s
+          method = "validate_#{c[:type]}"
           send(method, attr, c[:opt])
         end
       end
@@ -37,19 +37,19 @@ module Validation
 
     private
 
-    def presence(attr, _opt)
+    def validate_presence(attr, _opt)
       raise ArgumentError, 'You must input smth.' if attr.strip.size.zero?
     end
 
-    def format(attr, opt)
+    def validate_format(attr, opt)
       raise ArgumentError, 'Invalid format' if attr.strip !~ opt[0]
     end
 
-    def type(attr, opt)
+    def validate_type(attr, opt)
       raise TypeError, 'wrong type' unless attr.is_a?(opt[0])
     end
 
-    def uniqueness(attr, opt)
+    def validate_uniqueness(attr, opt)
       storage = opt[0].all
       if storage.is_a?(Array) && storage.any? { |i| i.name == attr }
         raise ArgumentError, "there is already #{attr}"
