@@ -8,7 +8,8 @@ module Accessors
       define_method("#{name}=".to_sym) do |value|
         @all_attrs ||= {}
         @all_attrs[name] ||= []
-        @all_attrs[name] << value
+        old_value = instance_variable_get(var_name)
+        @all_attrs[name] << old_value if old_value
 
         instance_variable_set(var_name, value)
       end

@@ -19,7 +19,7 @@ describe Accessors do
 
     expect(@user.name).to eql('Sarah')
     expect(@user.surname).to eql('Doe')
-    expect(@user.name_history).to eql(%w[John Sarah])
+    expect(@user.name_history).to eql(%w[John])
   end
 
   it 'strong_attr_accessor' do
