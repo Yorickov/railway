@@ -5,4 +5,4 @@ start:
 	ruby main.rb
 
 test:
-	bin/rspec
+	bundle exec rspec
